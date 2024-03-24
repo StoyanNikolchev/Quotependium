@@ -1,0 +1,24 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: linear-gradient(90deg, rgba(153,215,251,1) 0%, rgba(0,24,255,1) 51%, rgba(153,215,251,1) 100%);
+    font-family: 'Poppins', sans-serif;
+}
+
+form {
+    width: 24%;
+    background-color: white;
+    padding: 50px;
+    border-radius: 20px;
+    margin-top: 150px;
+}
+
+@media only screen and (max-width: 900px) {
+    form {
+        width: 80%;
+    }
+}
