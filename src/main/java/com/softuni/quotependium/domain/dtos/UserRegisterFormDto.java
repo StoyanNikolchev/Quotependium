@@ -1,15 +1,26 @@
 package com.softuni.quotependium.domain.dtos;
 
-import com.softuni.quotependium.domain.enums.UserRoleEnum;
-
-import java.util.List;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
 
 public class UserRegisterFormDto {
 
+    @NotBlank(message = "Enter your username")
     private String username;
+
+    @NotBlank(message = "Enter your password")
+    @Length(min = 6, message = "Passwords must be at least 6 characters long")
     private String password;
+
+    @NotBlank(message = "Confirm your password")
     private String confirmPassword;
+
+    @NotBlank(message = "Enter your email")
+    @Email(message = "Enter a valid email address")
     private String email;
+
+    @NotBlank(message = "Enter your full name")
     private String fullName;
 
     public String getUsername() {

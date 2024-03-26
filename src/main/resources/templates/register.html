@@ -14,7 +14,7 @@
     <form
             th:method="POST"
             th:action="@{/users/register}"
-            th:object="${UserRegisterFormDto}"
+            th:object="${userRegisterFormDto}"
             class="mx-auto">
         <h1 class="text-center">Register</h1>
 
@@ -24,7 +24,9 @@
                  class="form-control"
                  id="inputEmail"
                  name="email"
+                 th:errorclass="is-invalid"
                  aria-describedby="emailHelp">
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></div>
         </div>
 
         <div class="mb-3">
@@ -32,7 +34,9 @@
             <input type="text"
                    class="form-control"
                    name="username"
+                   th:errorclass="is-invalid"
                    id="inputUsername">
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="invalid-feedback"></div>
         </div>
 
         <div class="mb-3">
@@ -40,7 +44,9 @@
             <input type="text"
                    class="form-control"
                    name="fullName"
+                   th:errorclass="is-invalid"
                    id="fullName">
+            <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="invalid-feedback"></div>
         </div>
 
         <div class="mb-3">
@@ -49,7 +55,9 @@
                   type="password"
                   class="form-control"
                   name="password"
+                  th:errorclass="is-invalid"
                   id="inputPassword">
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></div>
         </div>
 
         <div class="mb-3">
@@ -57,7 +65,9 @@
             <input type="password"
                    class="form-control"
                    name="confirmPassword"
+                   th:errorclass="is-invalid"
                    id="confirmPassword">
+            <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="invalid-feedback"></div>
           </div>
           
         <button type="submit" class="btn btn-primary mt-4">Register</button>

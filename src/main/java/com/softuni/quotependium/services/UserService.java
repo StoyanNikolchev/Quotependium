@@ -30,11 +30,6 @@ public class UserService {
     }
 
     public void registerUser(UserRegisterFormDto userRegisterFormDto) {
-        if (!userRegisterFormDto.getPassword().equals(userRegisterFormDto.getConfirmPassword())) {
-            //TODO Passwords don't match error
-            return;
-        }
-
         userRegisterFormDto.setPassword(passwordEncoder.encode(userRegisterFormDto.getPassword()));
 
         UserEntity mappedUser = map(userRegisterFormDto);
@@ -50,5 +45,13 @@ public class UserService {
 
     private UserEntity map(UserRegisterFormDto userRegisterFormDto) {
         return this.modelMapper.map(userRegisterFormDto, UserEntity.class);
+    }
+
+    public boolean emailExists(String email) {
+        return this.userRepository.findUserEntityByEmail(email).isPresent();
+    }
+
+    public boolean usernameExists(String username) {
+        return this.userRepository.findUserEntityByUsername(username).isPresent();
     }
 }
