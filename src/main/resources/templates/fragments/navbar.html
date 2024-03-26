@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+
+<nav th:fragment="navigation" class="navbar navbar-expand-lg navbar-light bg-dark fs-5">
+    <div class="container-fluid">
+
+        <a class="navbar-brand" th:href="@{/}">
+            <img alt="logo" th:src="@{images/logo.png}" class="logo">
+            Quotependium
+        </a>
+
+        <button type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                class="navbar-toggler"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="nav navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}"><i class="fa-solid fa-house">
+                    </i> Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa-solid fa-table-list">
+                        </i> Browse</a>
+                </li>
+
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="#">
+                        <i class="fa-solid fa-user">
+                        </i> Profile</a>
+                </li>
+
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMINISTRATOR')">
+                    <a class="nav-link" href="#">
+                        <i class="fa-solid fa-user-tie">
+                        </i> Admin Panel</a>
+                </li>
+
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" th:href="@{/users/register}">
+                        <i class="fa-solid fa-user-plus">
+                        </i> Register</a>
+                </li>
+
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" th:href="@{/users/login}">
+                        <i class="fa-solid fa-right-to-bracket">
+                        </i> Login</a>
+                </li>
+
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
+                    </form>
+                    <a class="nav-link" href="#" onclick="document.getElementById('logoutForm').submit();">
+                        <i class="fa-solid fa-person-walking-arrow-right"></i> Logout
+                    </a>
+                </li>
+
+
+            </ul>
+        </div>
+
+    </div>
+</nav>
+</body>

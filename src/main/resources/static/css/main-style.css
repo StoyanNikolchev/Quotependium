@@ -1,0 +1,33 @@
+.navbar {
+    background-image: linear-gradient(90deg, rgba(153,215,251,1) 0%, rgba(46,65,255,1) 0%, rgba(153,215,251,1) 100%);
+}
+
+.navbar-brand{
+    font-size: large;
+    font-weight: bold;
+}
+
+.navbar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar .logo {
+    max-height: 50px;
+}
+
+.navbar-nav li {
+    display: inline-block;
+}
+
+.navbar-nav li a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.navbar-nav li a:hover {
+    color: #ffc107;
+}
+

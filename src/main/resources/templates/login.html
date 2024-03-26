@@ -13,7 +13,7 @@
 <body>
 <div class="container-fluid">
 
-    <form th:method="post"
+    <form th:method="POST"
           th:action="@{/users/login}"
           class="mx-auto">
 
@@ -28,6 +28,10 @@
             <label for="inputPassword" class="form-label">Password</label>
             <input type="password" th:value="${password}" name="password" class="form-control" id="inputPassword">
         </div>
+
+        <p th:if="${param.error}" class="errors alert alert-danger">
+            Invalid username or password.
+        </p>
 
         <button type="submit" class="btn btn-primary mt-4">Login</button>
 
