@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head}">
+</head>
+<body>
+
+<div>
+  <nav th:replace="~{/fragments/navbar}"></nav>
+</div>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form th:action="@{/books/add}"
+            th:method="POST"
+            th:object="${bookDto}">
+
+        <h1 class="text-center mb-4">We don't know this book. Please tell us more about it.</h1>
+
+        <div class="mb-3">
+          <label for="inputISBN" class="form-label">ISBN</label>
+          <input type="text" th:value="${bookDto.isbn}" class="form-control" name="isbn" id="inputISBN" readonly>
+        </div>
+
+        <div class="mb-3">
+          <label for="inputTitle" class="form-label">Title</label>
+          <input type="text" th:field="*{title}" class="form-control" id="inputTitle" name="title">
+        </div>
+
+        <div class="mb-3">
+          <label for="inputAuthors" class="form-label">Authors</label>
+          <input type="text" class="form-control" id="inputAuthors" name="authorsString" th:value="${bookDto.authorsString}" placeholder="Enter author names separated by commas">
+        </div>
+
+        <div class="mb-3">
+          <label for="inputPublicationYear" class="form-label">Publication Year</label>
+          <input type="text" th:field="*{publicationYear}" class="form-control" id="inputPublicationYear">
+        </div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary">Add Book</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

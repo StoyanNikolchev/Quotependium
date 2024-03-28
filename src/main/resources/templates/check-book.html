@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head}">
+</head>
+<body>
+
+<div>
+    <nav th:replace="~{/fragments/navbar}"></nav>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form th:action="@{/books/check}"
+                  th:method="POST"
+                  th:object="${bookDto}">
+
+                <h1 class="text-center mb-4">Enter the ISBN of the book your quote is from</h1>
+
+                <div class="mb-3">
+                    <label for="inputISBN" class="form-label">ISBN</label>
+                    <input type="text"
+                           th:value="${isbn}"
+                           th:errorclass="is-invalid"
+                           name="isbn"
+                           class="form-control"
+                           id="inputISBN">
+                    <div th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}" class="invalid-feedback"></div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
