@@ -30,3 +30,9 @@
 .navbar-nav li a:hover {
     color: #ffc107;
 }
+
+.invalid-feedback {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+}

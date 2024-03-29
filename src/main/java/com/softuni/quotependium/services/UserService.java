@@ -6,6 +6,7 @@ import com.softuni.quotependium.domain.entities.UserRoleEntity;
 import com.softuni.quotependium.domain.enums.UserRoleEnum;
 import com.softuni.quotependium.repositories.UserRepository;
 import com.softuni.quotependium.repositories.UserRoleRepository;
+import com.softuni.quotependium.utils.SecurityUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +37,11 @@ public class UserService {
 
         setDefaultRole(mappedUser);
         this.userRepository.saveAndFlush(mappedUser);
+    }
+
+    public Long getCurrentUserId() {
+        String currentUserUsername = SecurityUtils.getCurrentUser().getName();
+        return this.userRepository.findUserEntityByUsername(currentUserUsername).get().getId();
     }
 
     private void setDefaultRole(UserEntity mappedUser) {

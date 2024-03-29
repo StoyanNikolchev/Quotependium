@@ -2,6 +2,7 @@ package com.softuni.quotependium.services;
 
 import com.softuni.quotependium.domain.dtos.BookDto;
 import com.softuni.quotependium.domain.entities.AuthorEntity;
+import com.softuni.quotependium.domain.entities.BaseEntity;
 import com.softuni.quotependium.domain.entities.BookEntity;
 import com.softuni.quotependium.repositories.AuthorRepository;
 import com.softuni.quotependium.repositories.BookRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.softuni.quotependium.utils.FormattingUtils.formatAuthorsIntoSet;
@@ -31,12 +33,18 @@ public class BookService {
         return this.bookRepository.findBookEntityByIsbn(formattedIsbn).isPresent();
     }
 
+    public Long findBookIdByIsbn(String isbn) {
+        Optional<BookEntity> bookOptional = this.bookRepository.findBookEntityByIsbn(isbn);
+
+        return bookOptional.map(BaseEntity::getId).orElse(null);
+    }
+
     public void addBook(BookDto bookDto) {
-        bookDto.setAuthors(getAuthorEntities(formatAuthorsIntoSet(bookDto.getAuthorsString())));
+        bookDto.setAuthors(getAuthorEntitySetFromStringSet(formatAuthorsIntoSet(bookDto.getAuthorsString())));
         this.bookRepository.saveAndFlush(this.modelMapper.map(bookDto, BookEntity.class));
     }
 
-    private Set<AuthorEntity> getAuthorEntities(Set<String> names) {
+    private Set<AuthorEntity> getAuthorEntitySetFromStringSet(Set<String> names) {
         Set<AuthorEntity> authors = new HashSet<>();
 
         for (String name : names) {

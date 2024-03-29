@@ -19,22 +19,46 @@
 
         <div class="mb-3">
           <label for="inputISBN" class="form-label">ISBN</label>
-          <input type="text" th:value="${bookDto.isbn}" class="form-control" name="isbn" id="inputISBN" readonly>
+          <input type="text"
+                 th:value="${bookDto.isbn}"
+                 class="form-control"
+                 name="isbn"
+                 th:errorclass="is-invalid"
+                 id="inputISBN" readonly>
+          <div th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}" class="invalid-feedback"></div>
         </div>
 
         <div class="mb-3">
           <label for="inputTitle" class="form-label">Title</label>
-          <input type="text" th:field="*{title}" class="form-control" id="inputTitle" name="title">
+          <input type="text"
+                 th:field="*{title}"
+                 class="form-control"
+                 id="inputTitle"
+                 name="title"
+                 th:errorclass="is-invalid">
+          <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="invalid-feedback"></div>
         </div>
 
         <div class="mb-3">
           <label for="inputAuthors" class="form-label">Authors</label>
-          <input type="text" class="form-control" id="inputAuthors" name="authorsString" th:value="${bookDto.authorsString}" placeholder="Enter author names separated by commas">
+          <input type="text"
+                 class="form-control"
+                 id="inputAuthors"
+                 name="authorsString"
+                 th:errorclass="is-invalid"
+                 th:value="${bookDto.authorsString}"
+                 placeholder="Enter author names separated by commas">
+          <div th:if="${#fields.hasErrors('authorsString')}" th:errors="*{authorsString}" class="invalid-feedback"></div>
         </div>
 
         <div class="mb-3">
           <label for="inputPublicationYear" class="form-label">Publication Year</label>
-          <input type="text" th:field="*{publicationYear}" class="form-control" id="inputPublicationYear">
+          <input type="text"
+                 th:field="*{publicationYear}"
+                 th:errorclass="is-invalid"
+                 class="form-control"
+                 id="inputPublicationYear">
+          <div th:if="${#fields.hasErrors('publicationYear')}" th:errors="*{publicationYear}" class="invalid-feedback"></div>
         </div>
 
         <div class="d-grid">

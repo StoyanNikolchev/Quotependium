@@ -45,16 +45,16 @@ public class BookController {
             return "check-book";
         }
 
-        if (this.bookService.isbnExists(formattedIsbn)) {
-            //TODO: Book exists -> get BookDto with full book info -> redirect to add quote page to submit quote for approval
-
-        } else {
+        if (!this.bookService.isbnExists(formattedIsbn)) {
             bookDto.setIsbn(formattedIsbn);
             redirectAttributes.addFlashAttribute("bookDto", bookDto);
             return "redirect:/books/add";
         }
 
-        return "redirect:/";
+        //No need to check the id's validity since we already confirmed the book exists.
+        Long bookIdByIsbn = this.bookService.findBookIdByIsbn(formattedIsbn);
+        redirectAttributes.addAttribute("bookId", bookIdByIsbn);
+        return "redirect:/quotes/add";
     }
 
     @GetMapping("/books/add")
@@ -67,11 +67,14 @@ public class BookController {
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes) {
 
-        //TODO Validation failure logic
+        if (bindingResult.hasErrors()) {
+            return "add-book";
+        }
 
         this.bookService.addBook(bookDto);
-        //TODO Redirect to add quote page with the created book
-        return "redirect:/";
+        Long bookIdByIsbn = this.bookService.findBookIdByIsbn(bookDto.getIsbn());
+        redirectAttributes.addAttribute("bookId", bookIdByIsbn);
+        return "redirect:/quotes/add";
     }
 
     private String formatIsbnFormat(String isbn) {

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head}">
+</head>
+<body>
+
+<div>
+    <nav th:replace="~{/fragments/navbar}"></nav>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form th:action="@{/quotes/add}"
+                  th:method="POST"
+                  th:object="${quoteDto}">
+
+                <h1 class="text-center mb-4">Please enter your quote and the page it's from.</h1>
+
+                <div class="mb-3">
+                    <label for="inputText" class="form-label">Quote</label>
+                    <input type="text"
+                           th:field="*{text}"
+                           class="form-control"
+                           id="inputText"
+                           name="text"
+                           th:errorclass="is-invalid">
+                    <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}" class="invalid-feedback"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="inputPage" class="form-label">Page Number</label>
+                    <input type="text"
+                           th:field="*{pageNumber}"
+                           class="form-control"
+                           id="inputPage"
+                           name="pageNumber"
+                           th:errorclass="is-invalid">
+                    <div th:if="${#fields.hasErrors('pageNumber')}" th:errors="*{pageNumber}" class="invalid-feedback"></div>
+                </div>
+
+                <input type="hidden" name="bookId" value="${param.bookId}">
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Submit Quote</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
