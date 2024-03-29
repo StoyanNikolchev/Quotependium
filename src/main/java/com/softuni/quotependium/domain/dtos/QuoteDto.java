@@ -19,6 +19,16 @@ public class QuoteDto {
     private UserEntity user;
     private BookEntity book;
     private Integer likes;
+    private Long bookId;
+
+    public Long getBookId() {
+        return bookId;
+    }
+
+    public QuoteDto setBookId(Long bookId) {
+        this.bookId = bookId;
+        return this;
+    }
 
     public Integer getLikes() {
         return likes;

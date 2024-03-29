@@ -39,7 +39,7 @@
                     <div th:if="${#fields.hasErrors('pageNumber')}" th:errors="*{pageNumber}" class="invalid-feedback"></div>
                 </div>
 
-                <input type="hidden" name="bookId" value="${param.bookId}">
+                <input type="hidden" name="bookId" id="bookId" value="${param.bookId}">
 
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary">Submit Quote</button>
@@ -50,5 +50,9 @@
     </div>
 </div>
 
+<script>const urlParams = new URLSearchParams(window.location.search);
+        const bookId = urlParams.get('bookId');
+        const hiddenInput = document.getElementById("bookId");
+        hiddenInput.value = bookId</script>
 </body>
 </html>

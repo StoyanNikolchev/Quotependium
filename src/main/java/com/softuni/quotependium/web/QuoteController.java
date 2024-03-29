@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class QuoteController {
@@ -27,26 +26,21 @@ public class QuoteController {
 
     @GetMapping("/quotes/add")
     public String getAddQuote(@ModelAttribute("quoteDto") QuoteDto quoteDto,
-                              @RequestParam("bookId") Long bookId,
-                              HttpSession session) {
-        session.setAttribute("bookId", bookId);
+                              @RequestParam("bookId") Long bookId) {
         return "add-quote";
     }
 
     @PostMapping("/quotes/add")
     public String postQuote(@Valid QuoteDto quoteDto,
-                            HttpSession session,
                             BindingResult bindingResult) {
-
-        Long bookId = (Long) session.getAttribute("bookId");
-        session.removeAttribute("bookId");
 
         if (bindingResult.hasErrors()) {
             return "add-quote";
         }
 
         Long currentUserId = this.userService.getCurrentUserId();
-        this.quoteService.addQuote(quoteDto, bookId, currentUserId);
+        Long bookId = quoteDto.getBookId();
+        this.quoteService.addQuote(quoteDto, currentUserId);
         return "redirect:/";
     }
 }

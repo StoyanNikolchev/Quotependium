@@ -16,24 +16,29 @@ public class QuoteService {
     private final QuoteRepository quoteRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
 
     @Autowired
     public QuoteService(QuoteRepository quoteRepository, BookRepository bookRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.quoteRepository = quoteRepository;
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
     }
 
-    public void addQuote(QuoteDto quoteDto, Long bookId, Long currentUserId) {
-        BookEntity bookEntity = this.bookRepository.findById(bookId).get();
+    public void addQuote(QuoteDto quoteDto, Long currentUserId) {
+        BookEntity bookEntity = this.bookRepository.findById(quoteDto.getBookId()).get();
         UserEntity userEntity = this.userRepository.findById(currentUserId).get();
 
         quoteDto.setBook(bookEntity);
         quoteDto.setUser(userEntity);
         quoteDto.setLikes(0);
 
-        this.quoteRepository.saveAndFlush(this.modelMapper.map(quoteDto, QuoteEntity.class));
+        QuoteEntity mappedEntity = new QuoteEntity()
+                .setBook(bookEntity)
+                .setLikes(0)
+                .setText(quoteDto.getText())
+                .setUser(userEntity)
+                .setPageNumber(quoteDto.getPageNumber());
+
+        this.quoteRepository.saveAndFlush(mappedEntity);
     }
 }
