@@ -2,8 +2,12 @@ package com.softuni.quotependium.web;
 
 import com.softuni.quotependium.domain.dtos.UserRegisterFormDto;
 import com.softuni.quotependium.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,6 +56,13 @@ public class AuthController {
 
         this.userService.registerUser(userRegisterFormDto);
         return "redirect:/";
+    }
+
+    @GetMapping("/users/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+        return "redirect:/users/login";
     }
 }
 
