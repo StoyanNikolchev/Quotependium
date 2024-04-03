@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head}">
+</head>
+<body>
+
+<div>
+    <nav th:replace="~{/fragments/navbar}"></nav>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div th:if="${failureMessage}" class="alert alert-danger" role="alert">
+                <span th:text="${failureMessage}"></span>
+            </div>
+
+            <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                <span th:text="${successMessage}"></span>
+            </div>
+
+            <div th:each="user : ${usersPage.content}" class="card mb-3">
+                <div class="card-body">
+
+                    <h5 class="card-title" th:text="${user.username}"></h5>
+                    <p>
+                        Current roles:
+                        <span th:each="role, iterStat : ${user.roles}">
+                            <span th:text="${role.role}"></span>
+                            <span th:if="${!iterStat.last}">, </span>
+                        </span>
+                    </p>
+                    <form method="post" th:action="@{/admin/users}">
+                        <input type="hidden" th:name="userId" th:value="${user.id}" />
+                        <div th:each="role : ${T(com.softuni.quotependium.domain.enums.UserRoleEnum).values()}">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" th:checked="${user.roles.contains(role.name())}" th:name="userRoles" th:value="${role.name()}" />
+                                <label class="form-check-label" th:text="${role.name()}"></label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Roles</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div>
+                <a th:if="${usersPage.hasPrevious()}"
+                   th:href="@{/admin/users(page=${usersPage.number - 1}, size=${usersPage.size})}">&lt; Previous</a>
+                <span th:text="${usersPage.number + 1} + ' / ' + ${usersPage.totalPages}"></span>
+                <a th:if="${usersPage.hasNext()}" th:href="@{/admin/users(page=${usersPage.number + 1}, size=${usersPage.size})}">Next
+                    &gt;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

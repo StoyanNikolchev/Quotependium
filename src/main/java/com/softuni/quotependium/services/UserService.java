@@ -1,5 +1,6 @@
 package com.softuni.quotependium.services;
 
+import com.softuni.quotependium.domain.dtos.ManageUserRolesDto;
 import com.softuni.quotependium.domain.dtos.UserRegisterFormDto;
 import com.softuni.quotependium.domain.entities.UserEntity;
 import com.softuni.quotependium.domain.entities.UserRoleEntity;
@@ -10,11 +11,14 @@ import com.softuni.quotependium.repositories.UserRoleRepository;
 import com.softuni.quotependium.utils.SecurityUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -63,6 +67,16 @@ public class UserService {
         return userEntityByUsername.map(user -> user.getUsername().equalsIgnoreCase(username)).orElse(false);
     }
 
+    public Page<ManageUserRolesDto> getAllUsersToManageDto(Pageable pageable) {
+        Page<UserEntity> entityPage = this.userRepository.findAll(pageable);
+        return entityPage.map(this::convertToManageUserRolesDto);
+
+    }
+
+    private ManageUserRolesDto convertToManageUserRolesDto(UserEntity userEntity) {
+        return this.modelMapper.map(userEntity, ManageUserRolesDto.class);
+    }
+
     private void setDefaultRole(UserEntity mappedUser) {
         UserRoleEntity role = this.userRoleRepository.findByRole(UserRoleEnum.USER);
         mappedUser.setRoles(List.of(role));
@@ -76,5 +90,21 @@ public class UserService {
         UserEntity currentUser = getCurrentUserEntity();
         currentUser.setUsername(newUsername);
         userRepository.saveAndFlush(currentUser);
+    }
+
+    public void updateUserRoles(Long userId, List<String> stringRoles) {
+        UserEntity userEntity = this.userRepository.findById(userId).get();
+        List<UserRoleEntity> roles = convertStringRolesToUserRoleEntities(stringRoles);
+        userEntity.setRoles(roles);
+        userRepository.save(userEntity);
+    }
+
+    private List<UserRoleEntity> convertStringRolesToUserRoleEntities(List<String> stringRoles) {
+        return stringRoles.stream()
+                .map(role -> {
+                    UserRoleEnum enumValue = UserRoleEnum.valueOf(role);
+                    return this.userRoleRepository.findByRole(enumValue);
+                })
+                .collect(Collectors.toList());
     }
 }
