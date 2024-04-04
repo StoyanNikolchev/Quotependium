@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
-public class QuoteDto {
+public class QuoteImportDto {
 
     @NotBlank
     @Length(min = 10, message = "Quote must be at least 10 characters long")
@@ -25,7 +25,7 @@ public class QuoteDto {
         return bookId;
     }
 
-    public QuoteDto setBookId(Long bookId) {
+    public QuoteImportDto setBookId(Long bookId) {
         this.bookId = bookId;
         return this;
     }
@@ -34,7 +34,7 @@ public class QuoteDto {
         return likes;
     }
 
-    public QuoteDto setLikes(Integer likes) {
+    public QuoteImportDto setLikes(Integer likes) {
         this.likes = likes;
         return this;
     }
@@ -43,7 +43,7 @@ public class QuoteDto {
         return text;
     }
 
-    public QuoteDto setText(String text) {
+    public QuoteImportDto setText(String text) {
         this.text = text;
         return this;
     }
@@ -52,7 +52,7 @@ public class QuoteDto {
         return pageNumber;
     }
 
-    public QuoteDto setPageNumber(Integer pageNumber) {
+    public QuoteImportDto setPageNumber(Integer pageNumber) {
         this.pageNumber = pageNumber;
         return this;
     }
@@ -61,7 +61,7 @@ public class QuoteDto {
         return user;
     }
 
-    public QuoteDto setUser(UserEntity user) {
+    public QuoteImportDto setUser(UserEntity user) {
         this.user = user;
         return this;
     }
@@ -70,7 +70,7 @@ public class QuoteDto {
         return book;
     }
 
-    public QuoteDto setBook(BookEntity book) {
+    public QuoteImportDto setBook(BookEntity book) {
         this.book = book;
         return this;
     }

@@ -1,15 +1,23 @@
 package com.softuni.quotependium.services;
 
-import com.softuni.quotependium.domain.dtos.QuoteDto;
+import com.softuni.quotependium.domain.dtos.QuoteImportDto;
+import com.softuni.quotependium.domain.entities.AuthorEntity;
 import com.softuni.quotependium.domain.entities.BookEntity;
 import com.softuni.quotependium.domain.entities.QuoteEntity;
 import com.softuni.quotependium.domain.entities.UserEntity;
+import com.softuni.quotependium.domain.views.QuoteView;
 import com.softuni.quotependium.repositories.BookRepository;
 import com.softuni.quotependium.repositories.QuoteRepository;
 import com.softuni.quotependium.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+import static com.softuni.quotependium.utils.FormattingUtils.removeQuotes;
 
 @Service
 public class QuoteService {
@@ -24,21 +32,51 @@ public class QuoteService {
         this.userRepository = userRepository;
     }
 
-    public void addQuote(QuoteDto quoteDto, Long currentUserId) {
-        BookEntity bookEntity = this.bookRepository.findById(quoteDto.getBookId()).get();
+    public void addQuote(QuoteImportDto quoteImportDto, Long currentUserId) {
+        BookEntity bookEntity = this.bookRepository.findById(quoteImportDto.getBookId()).get();
         UserEntity userEntity = this.userRepository.findById(currentUserId).get();
 
-        quoteDto.setBook(bookEntity);
-        quoteDto.setUser(userEntity);
-        quoteDto.setLikes(0);
+        quoteImportDto.setBook(bookEntity);
+        quoteImportDto.setUser(userEntity);
+        quoteImportDto.setLikes(0);
+        quoteImportDto.setText(removeQuotes(quoteImportDto.getText()));
 
         QuoteEntity mappedEntity = new QuoteEntity()
                 .setBook(bookEntity)
                 .setLikes(0)
-                .setText(quoteDto.getText())
+                .setText(quoteImportDto.getText())
                 .setUser(userEntity)
-                .setPageNumber(quoteDto.getPageNumber());
+                .setPageNumber(quoteImportDto.getPageNumber());
 
         this.quoteRepository.saveAndFlush(mappedEntity);
+    }
+    public QuoteView getRandomQuoteView() {
+        Optional<QuoteEntity> quoteWithTopId = this.quoteRepository.findTopByOrderByIdDesc();
+
+        if (quoteWithTopId.isEmpty()) {
+            return null;
+        }
+
+        Long topId = quoteWithTopId.get().getId();
+        Random random = new Random();
+
+        Optional<QuoteEntity> randomQuoteOptional = Optional.empty();
+
+        while (randomQuoteOptional.isEmpty()) {
+            Long randomId = random.nextLong(topId + 1);
+            randomQuoteOptional = this.quoteRepository.findById(randomId);
+        }
+
+        return map(randomQuoteOptional.get());
+    }
+
+    private QuoteView map(QuoteEntity randomQuoteEntity) {
+        return new QuoteView()
+                .setText(randomQuoteEntity.getText())
+                .setAuthors(randomQuoteEntity.getBook()
+                        .getAuthors().stream()
+                        .map(AuthorEntity::getFullName)
+                        .collect(Collectors.toList()))
+                .setBookTitle(randomQuoteEntity.getBook().getTitle());
     }
 }

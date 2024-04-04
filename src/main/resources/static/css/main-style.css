@@ -1,10 +1,11 @@
 .navbar {
-    background-image: linear-gradient(90deg, rgba(153,215,251,1) 0%, rgba(46,65,255,1) 0%, rgba(153,215,251,1) 100%);
+    background-image: linear-gradient(90deg, rgba(109,64,22,1) 0%, rgba(255,255,255,1) 100%);
 }
 
 .navbar-brand{
-    font-size: large;
+    font-size: larger !important;
     font-weight: bold;
+    color: #fff !important;
 }
 
 .navbar-nav {
@@ -31,8 +32,58 @@
     color: #ffc107;
 }
 
+body {
+    background-image: url('../images/background.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat-y;
+}
+
+.btn-brown {
+    background-color: brown !important;
+    color: white !important;
+}
+
 .invalid-feedback, .text-danger {
     font-size: 14px;
     font-weight: 600;
     text-align: left;
 }
+
+.login-form, .register-form, .profile-form, .check-book-form, .add-quote-form, .add-book-form {
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(193,193,193,1) 100%); !important;
+    padding: 50px;
+    border-radius: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.login-form, .register-form {
+    width: 40%;
+}
+
+#quote-container {
+    margin-top: 20px;
+}
+#quote-content {
+    font-size: 1.25rem;
+}
+#authors, #book-title {
+    font-style: italic;
+    color: #6c757d;
+}
+
+.card {
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(193,193,193,1) 100%); !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 30px;
+}
+
+.quote-content {
+    font-size: 1.2rem;
+    color: #333;
+}
+

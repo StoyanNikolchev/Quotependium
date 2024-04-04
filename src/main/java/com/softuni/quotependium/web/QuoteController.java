@@ -1,9 +1,8 @@
 package com.softuni.quotependium.web;
 
-import com.softuni.quotependium.domain.dtos.QuoteDto;
+import com.softuni.quotependium.domain.dtos.QuoteImportDto;
 import com.softuni.quotependium.services.QuoteService;
 import com.softuni.quotependium.services.UserService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,13 +24,13 @@ public class QuoteController {
     }
 
     @GetMapping("/quotes/add")
-    public String getAddQuote(@ModelAttribute("quoteDto") QuoteDto quoteDto,
+    public String getAddQuote(@ModelAttribute("quoteImportDto") QuoteImportDto quoteImportDto,
                               @RequestParam("bookId") Long bookId) {
         return "add-quote";
     }
 
     @PostMapping("/quotes/add")
-    public String postQuote(@Valid QuoteDto quoteDto,
+    public String postQuote(@Valid QuoteImportDto quoteImportDto,
                             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
@@ -39,8 +38,8 @@ public class QuoteController {
         }
 
         Long currentUserId = this.userService.getCurrentUserId();
-        Long bookId = quoteDto.getBookId();
-        this.quoteService.addQuote(quoteDto, currentUserId);
+        Long bookId = quoteImportDto.getBookId();
+        this.quoteService.addQuote(quoteImportDto, currentUserId);
         return "redirect:/";
     }
 }

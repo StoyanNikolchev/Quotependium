@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/head}">
+<head th:replace="~{fragments/head}">
 </head>
 <body>
 
 <div>
-    <nav th:replace="~{/fragments/navbar}"></nav>
+    <nav th:replace="~{fragments/navbar}"></nav>
 </div>
 
 <div class="container mt-5">
@@ -13,7 +13,8 @@
         <div class="col-md-6">
             <form th:action="@{/quotes/add}"
                   th:method="POST"
-                  th:object="${quoteDto}">
+                  th:object="${quoteImportDto}"
+            class="add-quote-form">
 
                 <h1 class="text-center mb-4">Please enter your quote and the page it's from.</h1>
 
@@ -42,7 +43,7 @@
                 <input type="hidden" name="bookId" id="bookId" value="${param.bookId}">
 
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Submit Quote</button>
+                    <button type="submit" class="btn btn-brown">Submit Quote</button>
                 </div>
 
             </form>

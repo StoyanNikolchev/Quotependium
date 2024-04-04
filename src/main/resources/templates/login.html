@@ -1,39 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/auth-pages-style.css}">
+<head th:replace="~{fragments/head}">
 </head>
-
 <body>
+
+<div>
+    <nav th:replace="~{fragments/navbar}"></nav>
+</div>
+
 <div class="container-fluid">
 
     <form th:method="POST"
           th:action="@{/users/login}"
-          class="mx-auto">
+          class="mx-auto login-form">
 
         <h1 class="text-center">Login</h1>
 
         <div class="mb-3 mt-5">
             <label for="inputUsername" class="form-label">Username</label>
-            <input type="text" th:value="${username}" name="username" class="form-control" id="inputUsername">
+            <input type="text" th:value="${username}" name="username" class="form-control" id="inputUsername" required>
         </div>
 
         <div class="mb-3">
             <label for="inputPassword" class="form-label">Password</label>
-            <input type="password" th:value="${password}" name="password" class="form-control" id="inputPassword">
+            <input type="password" th:value="${password}" name="password" class="form-control" id="inputPassword" required>
         </div>
 
         <p th:if="${param.error}" class="errors alert alert-danger">
             Invalid username or password.
         </p>
 
-        <button type="submit" class="btn btn-primary mt-4">Login</button>
+        <button type="submit" class="btn btn-brown mt-4">Login</button>
 
     </form>
 </div>

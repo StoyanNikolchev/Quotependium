@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/head}">
+<head th:replace="~{fragments/head}">
 </head>
 <body>
 
 <div>
-    <nav th:replace="~{/fragments/navbar}"></nav>
+    <nav th:replace="~{fragments/navbar}"></nav>
 </div>
 
 <div class="container mt-5">
@@ -13,7 +13,8 @@
         <div class="col-md-6">
             <form th:action="@{/books/check}"
                   th:method="POST"
-                  th:object="${bookDto}">
+                  th:object="${bookDto}"
+            class="check-book-form">
 
                 <h1 class="text-center mb-4">Enter the ISBN of the book your quote is from</h1>
 
@@ -29,7 +30,7 @@
                 </div>
 
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-brown">Submit</button>
                 </div>
 
             </form>

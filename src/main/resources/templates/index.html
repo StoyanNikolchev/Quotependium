@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/head}">
+<head th:replace="~{fragments/head}">
 </head>
 <body>
 
 <div>
-    <nav th:replace="~{/fragments/navbar}"></nav>
+    <nav th:replace="~{fragments/navbar}"></nav>
 </div>
 
+<div class="container" id="quote-container">
+    <div class="card text-center">
+        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+            <h2 class="mb-4">Random Quote Generator</h2>
+            <div id="quote-content" class="mb-3"></div>
+            <div id="authors"></div>
+            <div id="book-title"></div>
+            <button class="btn btn-brown mt-3" onclick="fetchRandomQuote()">Generate</button>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/fetchRandomQuote.js}"></script>
 </body>
 </html>

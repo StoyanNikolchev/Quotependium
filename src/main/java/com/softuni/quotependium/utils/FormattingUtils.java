@@ -17,6 +17,24 @@ public class FormattingUtils {
         return authorNamesFormatted;
     }
 
+    public static String formatIsbn(String isbn) {
+        isbn = isbn.toUpperCase().trim();
+
+        if (isbn.startsWith("ISBN")) {
+            isbn = isbn.substring(4);
+        }
+
+        return isbn = isbn.replace("-", "").trim();
+    }
+
+    public static String removeQuotes(String text) {
+        text = text.trim();
+        if (text.startsWith("\"") && text.endsWith("\"")) {
+            return text.substring(1, text.length() - 1);
+        }
+        return text;
+    }
+
     private static String correctAuthorName(String name) {
         String[] nameParts = name.split("\\s+");
         StringBuilder correctedName = new StringBuilder();

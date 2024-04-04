@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static com.softuni.quotependium.utils.FormattingUtils.formatIsbn;
+
 @Controller
 public class BookController {
     private final BookService bookService;
@@ -34,7 +36,7 @@ public class BookController {
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
 
-        String formattedIsbn = formatIsbnFormat(bookDto.getIsbn());
+        String formattedIsbn = formatIsbn(bookDto.getIsbn());
         boolean isbnIsValid = IsbnUtils.checkIsbnValidity(formattedIsbn);
 
         if (!isbnIsValid) {
@@ -77,13 +79,5 @@ public class BookController {
         return "redirect:/quotes/add";
     }
 
-    private String formatIsbnFormat(String isbn) {
-        isbn = isbn.toUpperCase();
 
-        if (isbn.startsWith("ISBN")) {
-            isbn = isbn.substring(4);
-        }
-
-        return isbn = isbn.replace("-", "").trim();
-    }
 }
