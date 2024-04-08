@@ -4,11 +4,21 @@ import java.util.List;
 
 public class QuoteView {
     private String text;
+    private Long id;
     private List<String> authors;
     private String bookTitle;
 
     public String getText() {
         return text;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public QuoteView setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public QuoteView setText(String text) {
@@ -32,5 +42,12 @@ public class QuoteView {
     public QuoteView setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
         return this;
+    }
+
+    public String getAuthorsFormatted() {
+        return String.join(", ", this.authors);
+    }
+    public String getContentWithQuotationMarks() {
+        return "\"" + this.text + "\"";
     }
 }

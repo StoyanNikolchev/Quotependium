@@ -22,7 +22,7 @@ public class SecurityConfiguration {
         httpSecurity.
                 authorizeHttpRequests((authorize) -> authorize.
                         requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/users/login", "users/register", "/api/quotes/random").permitAll()
+                        .requestMatchers("/", "/users/login", "users/register", "/api/quotes/random", "/browse/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMINISTRATOR")
                         .anyRequest().authenticated())
                 .formLogin(formLogin ->

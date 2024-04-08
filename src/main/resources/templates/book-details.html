@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}">
+</head>
+<body>
+
+<div>
+    <nav th:replace="~{fragments/navbar}"></nav>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="book-details">
+                <h2 class="text-center"><span th:text="${book.title}"></span></h2>
+                <p>ISBN: <span th:text="${book.isbn}"></span></p>
+                <p>Authors: <span th:text="${book.getAuthorsFormatted()}"></span></p>
+                <p>Publication Year: <span th:text="${book.publicationYear}"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" id="quote-container">
+    <div th:each="quote : ${quotes.getContent()}" class="card quote-card text-center">
+        <div class="card-body">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                <p id="quote-content" th:text="${quote.getContentWithQuotationMarks()}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5 page-nav">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+
+            <li class="page-item" th:classappend="${quotes.isFirst() ? 'disabled' : ''}">
+                <a th:if="${quotes.isFirst()}" class="page-link" href="#" aria-label="Fisrt"><span aria-hidden="true">&laquo;</span></a>
+                <a th:unless="${quotes.isFirst()}" class="page-link" th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()})}" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
+            </li>
+
+            <li class="page-item"><a class="page-link" th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()}, page=${quotes.number - 1})}" th:if="${!quotes.first}">Previous</a></li>
+            <li class="page-item"><a class="page-link" th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()}, page=${quotes.number + 1})}" th:if="${!quotes.last}">Next</a></li>
+
+            <li class="page-item" th:classappend="${quotes.isLast() ? 'disabled' : ''}">
+                <a th:if="${quotes.isLast()}" class="page-link" href="#" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+                <a th:unless="${quotes.isLast()}" class="page-link" th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()},page=${quotes.getTotalPages() - 1})}" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>

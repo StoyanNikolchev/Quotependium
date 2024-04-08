@@ -34,7 +34,6 @@
 
 body {
     background-image: url('../images/background.jpeg');
-    background-size: cover;
     background-position: center;
     background-repeat: repeat-y;
 }
@@ -56,6 +55,12 @@ body {
     border-radius: 20px;
     margin-top: 50px;
     margin-bottom: 50px;
+}
+
+@media only screen and (max-width: 600px) {
+    .login-form, .register-form, .profile-form, .check-book-form, .add-quote-form, .add-book-form {
+        width: 100% !important;
+    }
 }
 
 .login-form, .register-form {
@@ -85,5 +90,69 @@ body {
 .quote-content {
     font-size: 1.2rem;
     color: #333;
+}
+
+.quote-card {
+    border-radius: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.browse-menu {
+    background: radial-gradient(circle, rgba(176,144,104,1) 0%, rgba(148,101,36,1) 100%);
+}
+
+.browse-menu .dropdown-item:hover {
+    color: black;
+}
+
+.page-nav {
+    display: grid;
+    place-items: center;
+    margin-top: 5rem;
+}
+
+#books-container {
+    padding-top: 50px;
+    text-align: center;
+}
+.book-item {
+    cursor: pointer;
+}
+.book-item:hover {
+    background-color: #f8f9fa;
+}
+.book-link {
+    color: #343a40;
+}
+.book-link:hover {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.browse-title {
+    background-color: rgba(255, 255, 255, 0.49);
+    color: black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.book-details {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-details h2 {
+    color: saddlebrown;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.book-details p {
+    font-size: 18px;
+    margin-bottom: 10px;
 }
 

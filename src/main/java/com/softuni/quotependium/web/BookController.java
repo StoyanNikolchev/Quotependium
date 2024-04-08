@@ -2,6 +2,7 @@ package com.softuni.quotependium.web;
 
 import com.softuni.quotependium.domain.dtos.BookDto;
 import com.softuni.quotependium.services.BookService;
+import com.softuni.quotependium.services.QuoteService;
 import com.softuni.quotependium.utils.IsbnUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class BookController {
     private final BookService bookService;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, QuoteService quoteService) {
         this.bookService = bookService;
     }
 
@@ -78,6 +79,4 @@ public class BookController {
         redirectAttributes.addAttribute("bookId", bookIdByIsbn);
         return "redirect:/quotes/add";
     }
-
-
 }

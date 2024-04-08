@@ -5,14 +5,18 @@ import com.softuni.quotependium.domain.entities.AuthorEntity;
 import com.softuni.quotependium.domain.entities.BookEntity;
 import com.softuni.quotependium.domain.entities.QuoteEntity;
 import com.softuni.quotependium.domain.entities.UserEntity;
+import com.softuni.quotependium.domain.views.BookDetailsView;
 import com.softuni.quotependium.domain.views.QuoteView;
 import com.softuni.quotependium.repositories.BookRepository;
 import com.softuni.quotependium.repositories.QuoteRepository;
 import com.softuni.quotependium.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -70,8 +74,21 @@ public class QuoteService {
         return map(randomQuoteOptional.get());
     }
 
+    public Page<QuoteView> getAllQuotes(Pageable pageable) {
+        return this.quoteRepository.findAll(pageable)
+                .map(this::map);
+    }
+
+    public Page<QuoteView> getAllQuotesByBookId(Long bookId, Pageable pageable) {
+        return this.quoteRepository.findAllByBookId(bookId, pageable)
+                .map(this::map);
+    }
+
+
+
     private QuoteView map(QuoteEntity randomQuoteEntity) {
         return new QuoteView()
+                .setId(randomQuoteEntity.getId())
                 .setText(randomQuoteEntity.getText())
                 .setAuthors(randomQuoteEntity.getBook()
                         .getAuthors().stream()

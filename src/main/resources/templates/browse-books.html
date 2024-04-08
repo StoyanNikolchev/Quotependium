@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}">
+</head>
+<body>
+
+<div>
+    <nav th:replace="~{fragments/navbar}"></nav>
+</div>
+
+<div class="container" id="books-container">
+    <h1 class="browse-title">List of Books</h1>
+    <ul class="list-group">
+        <li th:each="book : ${bookTitles.getContent()}" class="list-group-item book-item">
+            <a th:href="@{'/browse/books/' + ${book.id}}" class="book-link">
+                <span th:text="${book.title}"></span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<div class="container mt-5 page-nav">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+
+            <li class="page-item" th:classappend="${bookTitles.isFirst() ? 'disabled' : ''}">
+                <a th:if="${bookTitles.isFirst()}" class="page-link" href="#" aria-label="Fisrt"><span aria-hidden="true">&laquo;</span></a>
+                <a th:unless="${bookTitles.isFirst()}" class="page-link" th:href="@{/browse/books(size=${bookTitles.getSize()})}" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
+            </li>
+
+            <li class="page-item"><a class="page-link" th:href="@{/browse/books(size=${bookTitles.getSize()}, page=${bookTitles.number - 1})}" th:if="${!bookTitles.first}">Previous</a></li>
+            <li class="page-item"><a class="page-link" th:href="@{/browse/books(size=${bookTitles.getSize()}, page=${bookTitles.number + 1})}" th:if="${!bookTitles.last}">Next</a></li>
+
+            <li class="page-item" th:classappend="${bookTitles.isLast() ? 'disabled' : ''}">
+                <a th:if="${bookTitles.isLast()}" class="page-link" href="#" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+                <a th:unless="${bookTitles.isLast()}" class="page-link" th:href="@{/browse/books(size=${bookTitles.getSize()}, page=${bookTitles.getTotalPages() - 1})}" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

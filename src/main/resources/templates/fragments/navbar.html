@@ -30,11 +30,16 @@
                     </i> Home</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fa-solid fa-table-list">
-                        </i> Browse</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-table-list"></i> Browse
+                    </a>
+                    <ul class="dropdown-menu browse-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" th:href="@{/browse/quotes}">Quotes</a></li>
+                        <li><a class="dropdown-item" th:href="@{/browse/books}">Books</a></li>
+                    </ul>
                 </li>
+
 
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" th:href="@{/profile}">
