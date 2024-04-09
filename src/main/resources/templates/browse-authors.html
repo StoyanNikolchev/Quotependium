@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}">
+</head>
+<body>
+
+<div>
+  <nav th:replace="~{fragments/navbar}"></nav>
+</div>
+
+<div class="container" id="authors-container">
+  <h1 class="browse-title">List of Authors</h1>
+  <ul class="list-group">
+    <li th:each="author : ${authors.getContent()}" class="list-group-item author-item">
+      <a th:href="@{'/browse/authors/' + ${author.id}}" class="author-link">
+        <span th:text="${author.fullName}"></span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+<div class="container mt-5 page-nav">
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+
+      <li class="page-item" th:classappend="${authors.isFirst() ? 'disabled' : ''}">
+        <a th:if="${authors.isFirst()}" class="page-link" href="#" aria-label="Fisrt"><span aria-hidden="true">&laquo;</span></a>
+        <a th:unless="${authors.isFirst()}" class="page-link" th:href="@{/browse/authors(size=${authors.getSize()})}" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
+      </li>
+
+      <li class="page-item"><a class="page-link" th:href="@{/browse/authors(size=${authors.getSize()}, page=${authors.number - 1})}" th:if="${!authors.first}">Previous</a></li>
+      <li class="page-item"><a class="page-link" th:href="@{/browse/authors(size=${authors.getSize()}, page=${authors.number + 1})}" th:if="${!authors.last}">Next</a></li>
+
+      <li class="page-item" th:classappend="${authors.isLast() ? 'disabled' : ''}">
+        <a th:if="${authors.isLast()}" class="page-link" href="#" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+        <a th:unless="${authors.isLast()}" class="page-link" th:href="@{/browse/authors(size=${authors.getSize()}, page=${authors.getTotalPages() - 1})}" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+      </li>
+    </ul>
+  </nav>
+</div>
+</body>
+</html>

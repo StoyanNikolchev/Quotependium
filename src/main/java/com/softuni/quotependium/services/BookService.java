@@ -74,6 +74,13 @@ public class BookService {
                         .setId(book.getId()));
     }
 
+    public Page<BookTitleView> findBooksByAuthorId(Long authorId, Pageable pageable) {
+        return this.bookRepository.findBooksByAuthorId(authorId, pageable)
+                .map(bookEntity -> new BookTitleView()
+                        .setId(bookEntity.getId())
+                        .setTitle(bookEntity.getTitle()));
+    }
+
     private Set<AuthorEntity> getAuthorEntitySetFromStringSet(Set<String> names) {
         Set<AuthorEntity> authors = new HashSet<>();
 

@@ -1,8 +1,10 @@
 package com.softuni.quotependium.web;
 
+import com.softuni.quotependium.domain.views.AuthorView;
 import com.softuni.quotependium.domain.views.BookDetailsView;
 import com.softuni.quotependium.domain.views.BookTitleView;
 import com.softuni.quotependium.domain.views.QuoteView;
+import com.softuni.quotependium.services.AuthorService;
 import com.softuni.quotependium.services.BookService;
 import com.softuni.quotependium.services.QuoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BrowseController {
     private final QuoteService quoteService;
     private final BookService bookService;
+    private final AuthorService authorService;
 
     @Autowired
-    public BrowseController(QuoteService quoteService, BookService bookService) {
+    public BrowseController(QuoteService quoteService, BookService bookService, AuthorService authorService) {
         this.quoteService = quoteService;
         this.bookService = bookService;
+        this.authorService = authorService;
+    }
+
+    @GetMapping("/authors")
+    public String getAllAuthors(Model model,
+                                @PageableDefault(
+                                        sort = "id",
+                                        direction = Sort.Direction.ASC,
+                                        size = 10,
+                                        page = 0)
+                                Pageable pageable) {
+        Page<AuthorView> authorsPage = this.authorService.getAllAuthors(pageable);
+        model.addAttribute("authors", authorsPage);
+        return "browse-authors";
+    }
+
+    @GetMapping("authors/{authorId}")
+    public String getAuthorDetails(@PathVariable Long authorId,
+                                   Model model,
+                                   @PageableDefault(
+                                           sort = "id",
+                                           direction = Sort.Direction.ASC,
+                                           size = 3,
+                                           page = 0)
+                                       Pageable pageable) {
+
+        AuthorView authorById = this.authorService.findAuthorById(authorId);
+
+        if (authorById == null) {
+            //TODO: Author not found;
+        }
+
+        Page<BookTitleView> books = this.bookService.findBooksByAuthorId(authorId, pageable);
+        model.addAttribute("author", authorById);
+        model.addAttribute("books", books);
+
+        return "author-details";
     }
 
     @GetMapping("/quotes")
@@ -37,7 +77,7 @@ public class BrowseController {
                                        page = 0)
                                Pageable pageable) {
 
-        Page<QuoteView> quotesPage = quoteService.getAllQuotes(pageable);
+        Page<QuoteView> quotesPage = this.quoteService.getAllQuotes(pageable);
         model.addAttribute("quotes", quotesPage);
         return "browse-quotes";
     }

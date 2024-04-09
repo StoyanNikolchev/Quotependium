@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}">
+</head>
+<body>
+
+<div>
+    <nav th:replace="~{fragments/navbar}"></nav>
+</div>
+
+<div class="container" id="books-container">
+    <h1 class="browse-title">Books by <span th:text="${author.fullName}"></span></h1>
+    <ul class="list-group">
+        <li th:each="book : ${books.getContent()}" class="list-group-item book-item">
+            <a th:href="@{'/browse/books/' + ${book.id}}" class="book-link">
+                <span th:text="${book.title}"></span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<div class="container mt-5 page-nav">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+
+            <li class="page-item" th:classappend="${books.isFirst() ? 'disabled' : ''}">
+                <a th:if="${books.isFirst()}" class="page-link" href="#" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
+                <a th:unless="${books.isFirst()}" class="page-link" th:href="@{'/browse/authors/' + ${author.id}(size=${books.getSize()})}" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
+            </li>
+
+            <li class="page-item"><a class="page-link" th:href="@{'/browse/authors/' + ${author.id}(size=${books.getSize()}, page=${books.number - 1})}" th:if="${!books.first}">Previous</a></li>
+            <li class="page-item"><a class="page-link" th:href="@{'/browse/authors/' + ${author.id}(size=${books.getSize()}, page=${books.number + 1})}" th:if="${!books.last}">Next</a></li>
+
+            <li class="page-item" th:classappend="${books.isLast() ? 'disabled' : ''}">
+                <a th:if="${books.isLast()}" class="page-link" href="#" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+                <a th:unless="${books.isLast()}" class="page-link" th:href="@{'/browse/authors/' + ${author.id}(size=${books.getSize()},page=${books.getTotalPages() - 1})}" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

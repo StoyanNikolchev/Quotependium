@@ -112,17 +112,17 @@ body {
     margin-top: 5rem;
 }
 
-#books-container {
+#books-container, #authors-container {
     padding-top: 50px;
     text-align: center;
 }
-.book-item {
+.book-item, .author-item {
     cursor: pointer;
 }
 .book-item:hover {
     background-color: #f8f9fa;
 }
-.book-link {
+.book-link, .author-link {
     color: #343a40;
 }
 .book-link:hover {

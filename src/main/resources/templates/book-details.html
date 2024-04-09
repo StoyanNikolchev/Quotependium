@@ -37,7 +37,7 @@
         <ul class="pagination">
 
             <li class="page-item" th:classappend="${quotes.isFirst() ? 'disabled' : ''}">
-                <a th:if="${quotes.isFirst()}" class="page-link" href="#" aria-label="Fisrt"><span aria-hidden="true">&laquo;</span></a>
+                <a th:if="${quotes.isFirst()}" class="page-link" href="#" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
                 <a th:unless="${quotes.isFirst()}" class="page-link" th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()})}" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
             </li>
 
