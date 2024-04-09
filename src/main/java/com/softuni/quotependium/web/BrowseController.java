@@ -12,11 +12,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/browse")
@@ -58,7 +60,7 @@ public class BrowseController {
         AuthorView authorById = this.authorService.findAuthorById(authorId);
 
         if (authorById == null) {
-            //TODO: Author not found;
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found");
         }
 
         Page<BookTitleView> books = this.bookService.findBooksByAuthorId(authorId, pageable);
@@ -108,7 +110,7 @@ public class BrowseController {
         BookDetailsView bookById = this.bookService.findBookById(bookId);
 
         if (bookById == null) {
-            //TODO: Book not found;
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found");
         }
 
         Page<QuoteView> quotes = this.quoteService.getAllQuotesByBookId(bookId, pageable);

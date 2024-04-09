@@ -20,7 +20,7 @@
                 <span th:text="${successMessage}"></span>
             </div>
 
-            <div th:each="user : ${usersPage.content}" class="card mb-3">
+            <div th:each="user : ${usersPage.getContent()}" class="card mb-3">
                 <div class="card-body">
 
                     <h5 class="card-title" th:text="${user.username}"></h5>
@@ -47,18 +47,24 @@
     </div>
 </div>
 
-<div class="container mt-3">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div>
-                <a th:if="${usersPage.hasPrevious()}"
-                   th:href="@{/admin/users(page=${usersPage.number - 1}, size=${usersPage.size})}">&lt; Previous</a>
-                <span th:text="${usersPage.number + 1} + ' / ' + ${usersPage.totalPages}"></span>
-                <a th:if="${usersPage.hasNext()}" th:href="@{/admin/users(page=${usersPage.number + 1}, size=${usersPage.size})}">Next
-                    &gt;</a>
-            </div>
-        </div>
-    </div>
+<div class="container mt-5 page-nav">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+
+            <li class="page-item" th:classappend="${usersPage.isFirst() ? 'disabled' : ''}">
+                <a th:if="${usersPage.isFirst()}" class="page-link" href="#" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
+                <a th:unless="${usersPage.isFirst()}" class="page-link" th:href="@{/admin/users(size=${usersPage.getSize()})}" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
+            </li>
+
+            <li class="page-item"><a class="page-link" th:href="@{/admin/users(size=${usersPage.getSize()}, page=${usersPage.number - 1})}" th:if="${!usersPage.first}">Previous</a></li>
+            <li class="page-item"><a class="page-link" th:href="@{/admin/users(size=${usersPage.getSize()}, page=${usersPage.number + 1})}" th:if="${!usersPage.last}">Next</a></li>
+
+            <li class="page-item" th:classappend="${usersPage.isLast() ? 'disabled' : ''}">
+                <a th:if="${usersPage.isLast()}" class="page-link" href="#" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+                <a th:unless="${usersPage.isLast()}" class="page-link" th:href="@{/admin/users(size=${usersPage.getSize()}, page=${usersPage.getTotalPages() - 1})}" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 </body>
