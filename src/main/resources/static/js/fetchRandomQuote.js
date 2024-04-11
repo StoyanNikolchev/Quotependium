@@ -8,7 +8,7 @@ function fetchRandomQuote() {
 
             quoteContentElement.textContent = `"${randomQuote.text}"`;
             authorsElement.textContent = `Authors: ${randomQuote.authors.join(', ')}`;
-            bookTitleElement.textContent = `Book: ${randomQuote.bookTitle}`;
+            bookTitleElement.textContent = `${randomQuote.bookTitle}`;
         })
         .catch(error => console.error('Error fetching random quote:', error));
 }

@@ -36,7 +36,7 @@ public class QuoteView {
     }
 
     public String getBookTitle() {
-        return bookTitle;
+        return "Book: " + bookTitle;
     }
 
     public QuoteView setBookTitle(String bookTitle) {
@@ -45,7 +45,7 @@ public class QuoteView {
     }
 
     public String getAuthorsFormatted() {
-        return String.join(", ", this.authors);
+        return "Authors: " + String.join(", ", this.authors);
     }
     public String getContentWithQuotationMarks() {
         return "\"" + this.text + "\"";
