@@ -9,6 +9,15 @@
 </div>
 
 <div class="container" id="quote-container">
+    <div class="card text-center mb-4">
+        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+            <h2 class="mb-4">Quote of the Day</h2>
+            <div id="random-quote-content" th:text="${quoteOfTheDay.getContentWithQuotationMarks}" class="mb-3"></div>
+            <div id="random-quote-authors" th:text="${quoteOfTheDay.getAuthorsFormatted}"></div>
+            <div id="random-quote-book" th:text="${quoteOfTheDay.getBookTitle}"></div>
+        </div>
+    </div>
+
     <div class="card text-center">
         <div class="card-body d-flex flex-column align-items-center justify-content-center">
             <h2 class="mb-4">Random Quote Generator</h2>

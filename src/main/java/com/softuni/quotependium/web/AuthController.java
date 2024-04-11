@@ -55,7 +55,7 @@ public class AuthController {
         }
 
         this.userService.registerUser(userRegisterFormDto);
-        return "redirect:/";
+        return "login";
     }
 
     @GetMapping("/users/logout")

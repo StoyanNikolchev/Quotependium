@@ -70,10 +70,10 @@ body {
 #quote-container {
     margin-top: 20px;
 }
-#quote-content {
+#quote-content, #random-quote-content {
     font-size: 1.25rem;
 }
-#authors, #book-title {
+#authors, #book-title, #random-quote-authors, #random-quote-book {
     font-style: italic;
     color: #6c757d;
 }

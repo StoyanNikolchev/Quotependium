@@ -1,9 +1,6 @@
 package com.softuni.quotependium.domain.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Set;
 
@@ -17,7 +14,7 @@ public class BookEntity extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String isbn;
 
-    @ManyToMany
+    @ManyToMany(fetch= FetchType.EAGER)
     private Set<AuthorEntity> authors;
 
     @Column(name = "publication_year")
