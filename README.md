@@ -1,7 +1,6 @@
 # Quotependium
 
-Quotependium is a web application for managing quotes and books. Users can add quotes and books, and there's a random quote generator on the front page. Additionally, the admin panel allows managing user roles.
-
+Quotependium is a web application for managing quotes and books.
 ## Technologies Used
 
 - Spring Boot
