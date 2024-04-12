@@ -15,10 +15,11 @@ public class CustomErrorController implements ErrorController {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         if (status != null && Integer.parseInt(status.toString()) == HttpStatus.NOT_FOUND.value()) {
-            return "error/404";
+            return "errors/404";
 
         } else if (status != null && Integer.parseInt(status.toString()) == HttpStatus.FORBIDDEN.value()) {
-            return "error/403";
+            return "errors/403";
+
         }
         return "redirect:/";
     }

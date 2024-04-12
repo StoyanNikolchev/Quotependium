@@ -20,9 +20,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.
-                authorizeHttpRequests((authorize) -> authorize.
-                        requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/users/login", "users/register", "/api/quotes/random", "/browse/**").permitAll()
+                authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/", "/users/login", "users/register").permitAll()
+                        .requestMatchers("/api/quotes/random").permitAll()
+                        .requestMatchers("/browse/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMINISTRATOR")
                         .anyRequest().authenticated())
                 .formLogin(formLogin ->
