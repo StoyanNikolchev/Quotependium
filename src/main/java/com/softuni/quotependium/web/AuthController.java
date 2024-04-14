@@ -5,6 +5,8 @@ import com.softuni.quotependium.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -15,9 +17,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static com.softuni.quotependium.domain.enums.Constants.*;
 
 @Controller
 public class AuthController {
+    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final UserService userService;
 
     @Autowired
@@ -37,17 +43,20 @@ public class AuthController {
     }
 
     @PostMapping("/users/register")
-    public String postRegister(@Valid UserRegisterFormDto userRegisterFormDto, BindingResult bindingResult) {
+    public String postRegister(@Valid UserRegisterFormDto userRegisterFormDto,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) {
+
         if (this.userService.usernameExists(userRegisterFormDto.getUsername())) {
-            bindingResult.addError(new FieldError("userRegisterFormDto", "username", "Username already in use"));
+            bindingResult.addError(new FieldError("userRegisterFormDto", "username", USERNAME_TAKEN));
         }
 
         if (this.userService.emailExists(userRegisterFormDto.getEmail())) {
-            bindingResult.addError(new FieldError("userRegisterFormDto", "email", "Email already in use"));
+            bindingResult.addError(new FieldError("userRegisterFormDto", "email", EMAIL_TAKEN));
         }
 
         if (!userRegisterFormDto.getPassword().equals(userRegisterFormDto.getConfirmPassword())) {
-            bindingResult.addError(new FieldError("userRegisterFormDto", "confirmPassword", "Passwords must match"));
+            bindingResult.addError(new FieldError("userRegisterFormDto", "confirmPassword", PASSWORDS_MISMATCH));
         }
 
         if (bindingResult.hasErrors()) {
@@ -55,7 +64,10 @@ public class AuthController {
         }
 
         this.userService.registerUser(userRegisterFormDto);
-        return "login";
+        this.logger.info("User with username: '{}' successfully registered.", userRegisterFormDto.getUsername());
+
+        redirectAttributes.addFlashAttribute("successMessage", "Successfully registered. Please login.");
+        return "redirect:/users/login";
     }
 
     @GetMapping("/users/logout")
@@ -65,5 +77,3 @@ public class AuthController {
         return "redirect:/users/login";
     }
 }
-
-

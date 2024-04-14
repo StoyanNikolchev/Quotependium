@@ -3,7 +3,6 @@ package com.softuni.quotependium.domain.entities;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -22,6 +21,11 @@ public class UserEntity extends BaseEntity {
     private String fullName;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private List<UserRoleEntity> roles;
 
     public List<UserRoleEntity> getRoles() {

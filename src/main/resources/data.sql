@@ -56,7 +56,7 @@ INSERT INTO books (isbn, publication_year, title) VALUES
                                                       (9780140187398, 1939, 'The Grapes of Wrath'),
                                                       (9780140438935, 1871, 'Middlemarch');
 
-INSERT INTO books_authors (book_entity_id, authors_id) VALUES
+INSERT INTO books_authors (book_id, author_id) VALUES
                                                            (1, 1),
                                                            (2, 2),
                                                            (3, 3), (3, 25),

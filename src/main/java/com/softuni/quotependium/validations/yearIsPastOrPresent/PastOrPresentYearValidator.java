@@ -1,6 +1,5 @@
 package com.softuni.quotependium.validations.yearIsPastOrPresent;
 
-import com.softuni.quotependium.validations.yearIsPastOrPresent.PastOrPresentYear;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

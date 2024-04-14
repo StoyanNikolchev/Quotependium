@@ -5,6 +5,8 @@ import com.softuni.quotependium.services.BookService;
 import com.softuni.quotependium.services.QuoteService;
 import com.softuni.quotependium.utils.IsbnUtils;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static com.softuni.quotependium.utils.FormattingUtils.formatIsbn;
+import static com.softuni.quotependium.domain.enums.Constants.ENTER_VALID_ISBN;
+import static com.softuni.quotependium.utils.IsbnUtils.formatIsbn;
 
 @Controller
 public class BookController {
+    private final Logger logger = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
 
     @Autowired
@@ -41,7 +45,7 @@ public class BookController {
         boolean isbnIsValid = IsbnUtils.checkIsbnValidity(formattedIsbn);
 
         if (!isbnIsValid) {
-            bindingResult.addError(new FieldError("bookDto", "isbn", "Invalid ISBN format. Please check the back of your book for a 13-digit ISBN"));
+            bindingResult.addError(new FieldError("bookDto", "isbn", ENTER_VALID_ISBN));
         }
 
         if (bindingResult.hasErrors()) {
@@ -75,7 +79,11 @@ public class BookController {
         }
 
         this.bookService.addBook(bookDto);
-        Long bookIdByIsbn = this.bookService.findBookIdByIsbn(bookDto.getIsbn());
+
+        String isbn = bookDto.getIsbn();
+        this.logger.info("Added new book with ISBN {}", isbn);
+
+        Long bookIdByIsbn = this.bookService.findBookIdByIsbn(isbn);
         redirectAttributes.addAttribute("bookId", bookIdByIsbn);
         return "redirect:/quotes/add";
     }

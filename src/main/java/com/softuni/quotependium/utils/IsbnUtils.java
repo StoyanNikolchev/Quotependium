@@ -6,6 +6,16 @@ public class IsbnUtils {
         return formattedIsbn.length() == 13 && isValidLong(formattedIsbn);
     }
 
+    public static String formatIsbn(String isbn) {
+        isbn = isbn.toUpperCase().trim();
+
+        if (isbn.startsWith("ISBN")) {
+            isbn = isbn.substring(4);
+        }
+
+        return isbn = isbn.replace("-", "").trim();
+    }
+
     private static boolean isValidLong(String formattedIsbn) {
 
         try {

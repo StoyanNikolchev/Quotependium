@@ -5,23 +5,24 @@ import com.softuni.quotependium.domain.entities.AuthorEntity;
 import com.softuni.quotependium.domain.entities.BookEntity;
 import com.softuni.quotependium.domain.entities.QuoteEntity;
 import com.softuni.quotependium.domain.entities.UserEntity;
-import com.softuni.quotependium.domain.views.BookDetailsView;
 import com.softuni.quotependium.domain.views.QuoteView;
 import com.softuni.quotependium.repositories.BookRepository;
 import com.softuni.quotependium.repositories.QuoteRepository;
 import com.softuni.quotependium.repositories.UserRepository;
+import com.softuni.quotependium.utils.QuoteUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import static com.softuni.quotependium.utils.FormattingUtils.removeQuotes;
+import static com.softuni.quotependium.utils.QuoteUtils.getNullPlaceholderQuoteView;
+import static com.softuni.quotependium.utils.QuoteUtils.mapQuoteEntityToView;
 
 @Service
 public class QuoteService {
@@ -54,46 +55,23 @@ public class QuoteService {
 
         this.quoteRepository.saveAndFlush(mappedEntity);
     }
+
     public QuoteView getRandomQuoteView() {
-        Optional<QuoteEntity> quoteWithTopId = this.quoteRepository.findTopByOrderByIdDesc();
 
-        if (quoteWithTopId.isEmpty()) {
-            return null;
+        if (this.quoteRepository.count() == 0) {
+            return getNullPlaceholderQuoteView();
         }
 
-        Long topId = quoteWithTopId.get().getId();
-        Random random = new Random();
-
-        Optional<QuoteEntity> randomQuoteOptional = Optional.empty();
-
-        while (randomQuoteOptional.isEmpty()) {
-            Long randomId = random.nextLong(topId + 1);
-            randomQuoteOptional = this.quoteRepository.findById(randomId);
-        }
-
-        return map(randomQuoteOptional.get());
+        return mapQuoteEntityToView(this.quoteRepository.findRandomQuote());
     }
 
     public Page<QuoteView> getAllQuotes(Pageable pageable) {
         return this.quoteRepository.findAll(pageable)
-                .map(this::map);
+                .map(QuoteUtils::mapQuoteEntityToView);
     }
 
     public Page<QuoteView> getAllQuotesByBookId(Long bookId, Pageable pageable) {
         return this.quoteRepository.findAllByBookId(bookId, pageable)
-                .map(this::map);
-    }
-
-
-
-    private QuoteView map(QuoteEntity randomQuoteEntity) {
-        return new QuoteView()
-                .setId(randomQuoteEntity.getId())
-                .setText(randomQuoteEntity.getText())
-                .setAuthors(randomQuoteEntity.getBook()
-                        .getAuthors().stream()
-                        .map(AuthorEntity::getFullName)
-                        .collect(Collectors.toList()))
-                .setBookTitle(randomQuoteEntity.getBook().getTitle());
+                .map(QuoteUtils::mapQuoteEntityToView);
     }
 }

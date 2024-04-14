@@ -16,6 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+import static com.softuni.quotependium.domain.enums.Constants.NO_ROLES_SELECTED_ERROR;
+import static com.softuni.quotependium.domain.enums.Constants.ROLES_UPDATED_SUCCESSFULLY;
+
 @Controller
 public class AdminPanelController {
     private final UserService userService;
@@ -45,12 +48,12 @@ public class AdminPanelController {
                                   RedirectAttributes redirectAttributes) {
 
         if (userRoles == null) {
-            redirectAttributes.addFlashAttribute("failureMessage", "Please select at least one role!");
+            redirectAttributes.addFlashAttribute("failureMessage", NO_ROLES_SELECTED_ERROR);
             return "redirect:/admin/users";
         }
 
         this.userService.updateUserRoles(userId, userRoles);
-        redirectAttributes.addFlashAttribute("successMessage", "Roles updated successfully");
+        redirectAttributes.addFlashAttribute("successMessage", ROLES_UPDATED_SUCCESSFULLY);
         return "redirect:/admin/users";
     }
 }

@@ -1,6 +1,7 @@
 package com.softuni.quotependium.web;
 
 import com.softuni.quotependium.domain.views.QuoteView;
+import com.softuni.quotependium.services.QuoteOfTheDayService;
 import com.softuni.quotependium.services.schedulers.QuoteOfTheDayScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,16 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-    private final QuoteOfTheDayScheduler quoteOfTheDayScheduler;
+    private final QuoteOfTheDayService quoteOfTheDayService;
 
     @Autowired
-    public HomeController(QuoteOfTheDayScheduler quoteOfTheDayScheduler) {
-        this.quoteOfTheDayScheduler = quoteOfTheDayScheduler;
+    public HomeController(QuoteOfTheDayScheduler quoteOfTheDayScheduler, QuoteOfTheDayService quoteOfTheDayService) {
+        this.quoteOfTheDayService = quoteOfTheDayService;
     }
 
     @GetMapping("/")
     public String getHome(Model model) {
-        QuoteView quoteOfTheDay = this.quoteOfTheDayScheduler.getQuoteOfTheDay();
+        QuoteView quoteOfTheDay = this.quoteOfTheDayService.getQuoteOfTheDayView();
         model.addAttribute("quoteOfTheDay", quoteOfTheDay);
         return "index";
     }

@@ -4,6 +4,8 @@ import com.softuni.quotependium.domain.dtos.QuoteImportDto;
 import com.softuni.quotependium.services.QuoteService;
 import com.softuni.quotependium.services.UserService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class QuoteController {
+    private final Logger logger = LoggerFactory.getLogger(QuoteController.class);
     private final QuoteService quoteService;
     private final UserService userService;
 
@@ -38,8 +41,8 @@ public class QuoteController {
         }
 
         Long currentUserId = this.userService.getCurrentUserId();
-        Long bookId = quoteImportDto.getBookId();
         this.quoteService.addQuote(quoteImportDto, currentUserId);
+        this.logger.info("Added new quote from book with title '{}'", quoteImportDto.getBook().getTitle());
         return "redirect:/";
     }
 }

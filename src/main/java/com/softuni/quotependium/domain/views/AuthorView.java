@@ -1,7 +1,6 @@
 package com.softuni.quotependium.domain.views;
 
 public class AuthorView {
-
     private String fullName;
 
     private Long id;

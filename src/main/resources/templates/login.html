@@ -8,6 +8,10 @@
     <nav th:replace="~{fragments/navbar}"></nav>
 </div>
 
+<div th:if="${successMessage}" class="alert alert-success" role="alert">
+    <span th:text="${successMessage}"></span>
+</div>
+
 <div class="container-fluid">
 
     <form th:method="POST"

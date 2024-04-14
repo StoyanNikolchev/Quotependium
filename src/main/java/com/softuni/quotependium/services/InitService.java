@@ -8,6 +8,7 @@ import com.softuni.quotependium.repositories.UserRepository;
 import com.softuni.quotependium.repositories.UserRoleRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,17 @@ public class InitService {
     private final PasswordEncoder passwordEncoder;
     private final BookRepository bookRepository;
     private final DataSource dataSource;
+    @Value("${admin.email}")
+    private String adminEmail;
+
+    @Value("${admin.fullName}")
+    private String adminFullName;
+
+    @Value("${admin.username}")
+    private String adminUsername;
+
+    @Value("${admin.password}")
+    private String adminPassword;
     @Autowired
     public InitService(UserRoleRepository userRoleRepository,
                        UserRepository userRepository,
@@ -51,10 +63,10 @@ public class InitService {
     private void initAdmin() {
         if (this.userRepository.count() == 0) {
             UserEntity admin = new UserEntity()
-                    .setEmail("admin@admin.com")
-                    .setFullName("Admin Adminov")
-                    .setUsername("Admin")
-                    .setPassword(this.passwordEncoder.encode("turboUnbreakablePassword"))
+                    .setEmail(adminEmail)
+                    .setFullName(adminFullName)
+                    .setUsername(adminUsername)
+                    .setPassword(this.passwordEncoder.encode(adminPassword))
                     .setRoles(userRoleRepository.findAll());
 
             this.userRepository.save(admin);
