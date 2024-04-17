@@ -23,6 +23,7 @@ public class InitService {
     private final PasswordEncoder passwordEncoder;
     private final BookRepository bookRepository;
     private final DataSource dataSource;
+
     @Value("${admin.email}")
     private String adminEmail;
 
@@ -82,4 +83,6 @@ public class InitService {
             this.userRoleRepository.save(adminRole);
         }
     }
+
+    //TODO: Somehow test this garbage service with private methods D:
 }

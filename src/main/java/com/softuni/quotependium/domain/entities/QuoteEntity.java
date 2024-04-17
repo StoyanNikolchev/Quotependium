@@ -46,6 +46,12 @@ public class QuoteEntity extends BaseEntity {
         return this;
     }
 
+    @Override
+    public QuoteEntity setId(Long id) {
+        super.setId(id);
+        return this;
+    }
+
     public UserEntity getUser() {
         return user;
     }

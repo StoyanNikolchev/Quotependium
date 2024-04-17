@@ -21,4 +21,10 @@ public class UserRoleEntity extends BaseEntity {
         this.role = role;
         return this;
     }
+
+    @Override
+    public UserRoleEntity setId(Long id) {
+        super.setId(id);
+        return this;
+    }
 }

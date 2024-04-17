@@ -60,4 +60,10 @@ public class BookEntity extends BaseEntity {
         this.publicationYear = publicationYear;
         return this;
     }
+
+    @Override
+    public BookEntity setId(Long id) {
+        super.setId(id);
+        return this;
+    }
 }

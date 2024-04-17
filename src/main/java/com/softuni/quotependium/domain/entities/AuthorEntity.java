@@ -19,4 +19,10 @@ public class AuthorEntity extends BaseEntity {
         this.fullName = fullName;
         return this;
     }
+
+    @Override
+    public AuthorEntity setId(Long id) {
+        super.setId(id);
+        return this;
+    }
 }

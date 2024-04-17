@@ -57,6 +57,12 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
+    @Override
+    public UserEntity setId(Long id) {
+        super.setId(id);
+        return this;
+    }
+
     public String getUsername() {
         return username;
     }

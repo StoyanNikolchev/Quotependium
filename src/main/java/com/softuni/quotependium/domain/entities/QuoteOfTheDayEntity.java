@@ -33,4 +33,10 @@ public class QuoteOfTheDayEntity extends BaseEntity {
         this.quoteId = quoteId;
         return this;
     }
+
+    @Override
+    public QuoteOfTheDayEntity setId(Long id) {
+        super.setId(id);
+        return this;
+    }
 }
