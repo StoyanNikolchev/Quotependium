@@ -1,7 +1,6 @@
 package com.softuni.quotependium.services;
 
 import com.softuni.quotependium.domain.dtos.QuoteImportDto;
-import com.softuni.quotependium.domain.entities.AuthorEntity;
 import com.softuni.quotependium.domain.entities.BookEntity;
 import com.softuni.quotependium.domain.entities.QuoteEntity;
 import com.softuni.quotependium.domain.entities.UserEntity;
@@ -15,10 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 import static com.softuni.quotependium.utils.FormattingUtils.removeQuotes;
 import static com.softuni.quotependium.utils.QuoteUtils.getNullPlaceholderQuoteView;

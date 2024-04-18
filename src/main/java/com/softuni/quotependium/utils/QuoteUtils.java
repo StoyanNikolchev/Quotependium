@@ -22,7 +22,7 @@ public class QuoteUtils {
 
     public static QuoteView getNullPlaceholderQuoteView() {
         return new QuoteView()
-                .setText("NULL. No quotes in the database!!!")
+                .setText("Error: no quote of the day!")
                 .setId(null)
                 .setBookTitle("The Book of Nothingness")
                 .setAuthors(List.of("Mr Nobody"));
