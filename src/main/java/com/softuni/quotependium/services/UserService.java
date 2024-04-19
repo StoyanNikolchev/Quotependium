@@ -70,7 +70,6 @@ public class UserService {
     public Page<ManageUserRolesDto> getAllUsersToManageDto(Pageable pageable) {
         Page<UserEntity> entityPage = this.userRepository.findAll(pageable);
         return entityPage.map(this::convertToManageUserRolesDto);
-
     }
 
     private ManageUserRolesDto convertToManageUserRolesDto(UserEntity userEntity) {
