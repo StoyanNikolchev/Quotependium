@@ -1,6 +1,7 @@
 package com.softuni.quotependium.utils;
 
 import com.softuni.quotependium.domain.entities.AuthorEntity;
+import com.softuni.quotependium.domain.entities.BaseEntity;
 import com.softuni.quotependium.domain.entities.QuoteEntity;
 import com.softuni.quotependium.domain.views.QuoteView;
 
@@ -17,7 +18,8 @@ public class QuoteUtils {
                         .getAuthors().stream()
                         .map(AuthorEntity::getFullName)
                         .collect(Collectors.toList()))
-                .setBookTitle(quoteEntity.getBook().getTitle());
+                .setBookTitle(quoteEntity.getBook().getTitle())
+                .setLikedByUserIds(quoteEntity.getLikedByUsers().stream().map(BaseEntity::getId).collect(Collectors.toSet()));
     }
 
     public static QuoteView getNullPlaceholderQuoteView() {

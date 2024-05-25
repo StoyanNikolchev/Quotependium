@@ -156,3 +156,20 @@ body {
     margin-bottom: 10px;
 }
 
+.like-button, .liked-button {
+    padding: 5px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+.like-button {
+    background-color: gray;
+    color: white;
+}
+
+.liked-button {
+    background-color: green;
+    color: white;
+}
+

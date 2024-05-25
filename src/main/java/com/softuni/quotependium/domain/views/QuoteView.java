@@ -1,12 +1,23 @@
 package com.softuni.quotependium.domain.views;
 
 import java.util.List;
+import java.util.Set;
 
 public class QuoteView {
     private String text;
     private Long id;
     private List<String> authors;
     private String bookTitle;
+    private Set<Long> likedByUserIds;
+
+    public Set<Long> getLikedByUserIds() {
+        return likedByUserIds;
+    }
+
+    public QuoteView setLikedByUserIds(Set<Long> likedByUserIds) {
+        this.likedByUserIds = likedByUserIds;
+        return this;
+    }
 
     public String getText() {
         return text;

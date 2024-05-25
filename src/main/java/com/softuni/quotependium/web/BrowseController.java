@@ -7,6 +7,7 @@ import com.softuni.quotependium.domain.views.QuoteView;
 import com.softuni.quotependium.services.AuthorService;
 import com.softuni.quotependium.services.BookService;
 import com.softuni.quotependium.services.QuoteService;
+import com.softuni.quotependium.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,12 +27,14 @@ public class BrowseController {
     private final QuoteService quoteService;
     private final BookService bookService;
     private final AuthorService authorService;
+    private final UserService userService;
 
     @Autowired
-    public BrowseController(QuoteService quoteService, BookService bookService, AuthorService authorService) {
+    public BrowseController(QuoteService quoteService, BookService bookService, AuthorService authorService, UserService userService) {
         this.quoteService = quoteService;
         this.bookService = bookService;
         this.authorService = authorService;
+        this.userService = userService;
     }
 
     @GetMapping("/authors")
@@ -55,7 +58,7 @@ public class BrowseController {
                                            direction = Sort.Direction.ASC,
                                            size = 3,
                                            page = 0)
-                                       Pageable pageable) {
+                                   Pageable pageable) {
 
         AuthorView authorById = this.authorService.findAuthorById(authorId);
 
@@ -81,6 +84,12 @@ public class BrowseController {
 
         Page<QuoteView> quotesPage = this.quoteService.getAllQuotes(pageable);
         model.addAttribute("quotes", quotesPage);
+
+        Long currentUserId = this.userService.getCurrentUserId();
+        if (currentUserId != null) {
+            model.addAttribute("currentUserId", currentUserId);
+        }
+
         return "browse-quotes";
     }
 

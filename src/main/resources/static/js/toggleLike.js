@@ -1,4 +1,4 @@
-function toggleLike(quoteId) {
+function toggleLike(button, quoteId) {
     fetch('/like-quote/' + quoteId, {
         method: 'POST',
         headers: {
@@ -8,12 +8,19 @@ function toggleLike(quoteId) {
     })
         .then(response => {
             if (response.ok) {
-                console.log("Like toggled successfully");
+                if (button) {
+                    button.textContent = button.textContent === "Like" ? "Liked" : "Like";
+                    button.classList.toggle('like-button');
+                    button.classList.toggle('liked-button');
+                    console.log("Like toggled successfully");
+                } else {
+                    console.log("Button not found");
+                }
             } else {
                 console.log("Error toggling like");
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error("Error:", error);
         });
 }

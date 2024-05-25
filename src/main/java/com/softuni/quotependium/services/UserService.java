@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,7 +47,11 @@ public class UserService {
     }
 
     public Long getCurrentUserId() {
-        String currentUserUsername = SecurityUtils.getCurrentUser().getName();
+        Principal currentUser = SecurityUtils.getCurrentUser();
+        if (currentUser == null) {
+            return null;
+        }
+        String currentUserUsername = currentUser.getName();
         return this.userRepository.findUserEntityByUsername(currentUserUsername).get().getId();
     }
 
