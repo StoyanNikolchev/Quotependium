@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head}">
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/head}"></head>
 <body>
 
 <div>
@@ -16,6 +15,9 @@
                 <p id="authors" th:text="${quote.getAuthorsFormatted()}"></p>
                 Book:
                 <p id="book-title" th:text="${quote.getBookTitle()}"></p>
+
+                <button sec:authorize="isAuthenticated()"
+                        th:onclick="|toggleLike('${quote.id}')|">Like</button>
             </div>
         </div>
     </div>
@@ -40,5 +42,7 @@
         </ul>
     </nav>
 </div>
+
+<script th:src="@{/js/toggleLike.js}"></script>
 </body>
 </html>

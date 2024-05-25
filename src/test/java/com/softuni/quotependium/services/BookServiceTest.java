@@ -7,6 +7,7 @@ import com.softuni.quotependium.domain.views.BookDetailsView;
 import com.softuni.quotependium.domain.views.BookTitleView;
 import com.softuni.quotependium.repositories.AuthorRepository;
 import com.softuni.quotependium.repositories.BookRepository;
+import com.softuni.quotependium.testUtils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -22,10 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class BookServiceTest {
-    private final String testFormattedIsbn = "1234567890123";
-    private final String testBookTitleOne = "Test Book";
-    private final String testBookTitleTwo = "Test Book 2";
-    private final int testBookPublicationYear = 2000;
     @Mock
     private BookRepository bookRepository;
     @Mock
@@ -43,10 +40,11 @@ public class BookServiceTest {
     @Test
     public void givenExistingIsbn_isbnExists_returnsTrue() {
         //ARRANGE
-        when(bookRepository.findBookEntityByIsbn(testFormattedIsbn)).thenReturn(Optional.of(new BookEntity()));
+        BookEntity testBook = TestUtils.getTwoTestBookEntities().get(0);
+        when(bookRepository.findBookEntityByIsbn(testBook.getIsbn())).thenReturn(Optional.of(testBook));
 
         //ACT
-        boolean result = bookService.isbnExists(testFormattedIsbn);
+        boolean result = bookService.isbnExists(testBook.getIsbn());
 
         //ASSERT
         assertTrue(result);
@@ -55,26 +53,20 @@ public class BookServiceTest {
     @Test
     public void givenExistingBookId_findBookById_returnsBookDetailsView() {
         //ARRANGE
-        Long id = 1L;
+        BookEntity testBook = TestUtils.getTwoTestBookEntities().get(0);
+        AuthorEntity testAuthor = TestUtils.getTwoTestAuthorEntities().get(0);
 
-        BookEntity bookEntity = new BookEntity().
-                setId(id)
-                .setTitle(testBookTitleOne)
-                .setAuthors(Set.of(new AuthorEntity().setId(1L).setFullName("Test Author")))
-                .setPublicationYear(testBookPublicationYear)
-                .setIsbn(testFormattedIsbn);
-
-        when(bookRepository.findById(id)).thenReturn(Optional.of(bookEntity));
+        when(bookRepository.findById(testBook.getId())).thenReturn(Optional.of(testBook));
 
         //ACT
-        BookDetailsView result = bookService.findBookById(id);
+        BookDetailsView result = bookService.findBookById(testBook.getId());
 
         //ASSERT
-        assertEquals(id, result.getId());
-        assertEquals(testBookTitleOne, result.getTitle());
-        assertEquals(testBookPublicationYear, result.getPublicationYear());
-        assertEquals(testFormattedIsbn, result.getIsbn());
-        assertEquals(List.of("Test Author"), result.getAuthors());
+        assertEquals(testBook.getId(), result.getId());
+        assertEquals(testBook.getTitle(), result.getTitle());
+        assertEquals(testBook.getPublicationYear(), result.getPublicationYear());
+        assertEquals(testBook.getIsbn(), result.getIsbn());
+        assertEquals(List.of(testAuthor.getFullName()), result.getAuthors());
     }
 
     @Test
@@ -93,10 +85,11 @@ public class BookServiceTest {
     public void givenExistingIsbn_findBookIdByIsbn_returnsBookId() {
         //ARRANGE
         Long id = 1L;
-        when(bookRepository.findBookEntityByIsbn(testFormattedIsbn)).thenReturn(Optional.of(new BookEntity().setId(id)));
+        BookEntity testBook = TestUtils.getTwoTestBookEntities().get(0);
+        when(bookRepository.findBookEntityByIsbn(testBook.getIsbn())).thenReturn(Optional.of(testBook));
 
         //ACT
-        Long result = bookService.findBookIdByIsbn(testFormattedIsbn);
+        Long result = bookService.findBookIdByIsbn(testBook.getIsbn());
 
         //ASSERT
         assertEquals(id, result);
@@ -107,9 +100,9 @@ public class BookServiceTest {
         //ARRANGE
         BookDto bookDto = new BookDto()
                 .setAuthorsString("Author 1, Author 2")
-                .setTitle(testBookTitleOne)
-                .setIsbn(testFormattedIsbn)
-                .setPublicationYear(testBookPublicationYear);
+                .setTitle("Test Title")
+                .setIsbn("1234567890000")
+                .setPublicationYear(2013);
 
         AuthorEntity authorEntity1 = new AuthorEntity().setFullName("Author 1");
 
@@ -132,10 +125,7 @@ public class BookServiceTest {
     @Test
     public void getAllTitles_shouldReturnPageOfBookTitleViews() {
         //ARRANGE
-        List<BookEntity> books = List.of(
-                new BookEntity().setId(1L).setTitle(testBookTitleOne),
-                new BookEntity().setId(2L).setTitle(testBookTitleTwo)
-        );
+        List<BookEntity> books = TestUtils.getTwoTestBookEntities();
 
         Pageable pageable = mock(Pageable.class);
         Page<BookEntity> page = new PageImpl<>(books);
@@ -149,20 +139,18 @@ public class BookServiceTest {
         assertEquals(2, result.getTotalElements());
 
         assertEquals(1L, result.getContent().get(0).getId());
-        assertEquals(testBookTitleOne, result.getContent().get(0).getTitle());
+        assertEquals(books.get(0).getTitle(), result.getContent().get(0).getTitle());
 
         assertEquals(2L, result.getContent().get(1).getId());
-        assertEquals(testBookTitleTwo, result.getContent().get(1).getTitle());
+        assertEquals(books.get(1).getTitle(), result.getContent().get(1).getTitle());
     }
 
     @Test
     public void findBooksByAuthorId_shouldReturnPageOfBookTitleViewsByAuthorId() {
         //ARRANGE
         long authorId = 1L;
-        List<BookEntity> books = List.of(
-                new BookEntity().setId(1L).setTitle(testBookTitleOne),
-                new BookEntity().setId(2L).setTitle(testBookTitleTwo)
-        );
+        List<BookEntity> books = TestUtils.getTwoTestBookEntities();
+
         Pageable pageable = mock(Pageable.class);
         Page<BookEntity> page = new PageImpl<>(books);
 
@@ -173,7 +161,7 @@ public class BookServiceTest {
 
         //ASSERT
         assertEquals(2, result.getTotalElements());
-        assertEquals(testBookTitleOne, result.getContent().get(0).getTitle());
-        assertEquals(testBookTitleTwo, result.getContent().get(1).getTitle());
+        assertEquals(books.get(0).getTitle(), result.getContent().get(0).getTitle());
+        assertEquals(books.get(1).getTitle(), result.getContent().get(1).getTitle());
     }
 }

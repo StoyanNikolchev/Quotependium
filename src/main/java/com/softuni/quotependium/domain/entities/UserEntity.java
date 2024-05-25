@@ -2,7 +2,9 @@ package com.softuni.quotependium.domain.entities;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -19,6 +21,23 @@ public class UserEntity extends BaseEntity {
 
     @Column(name = "full_name")
     private String fullName;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_liked_quotes",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "quote_id")
+    )
+    private Set<QuoteEntity> likedQuotes = new HashSet<>();
+
+    public Set<QuoteEntity> getLikedQuotes() {
+        return likedQuotes;
+    }
+
+    public UserEntity setLikedQuotes(Set<QuoteEntity> likedQuotes) {
+        this.likedQuotes = likedQuotes;
+        return this;
+    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

@@ -27,6 +27,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/browse/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMINISTRATOR")
+                        .requestMatchers("/like-quote/**").authenticated()
                         .anyRequest().authenticated())
                 .formLogin(formLogin ->
                         formLogin.

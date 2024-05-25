@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.softuni.quotependium.utils.FormattingUtils.removeQuotes;
 import static com.softuni.quotependium.utils.QuoteUtils.getNullPlaceholderQuoteView;
@@ -68,5 +69,26 @@ public class QuoteService {
     public Page<QuoteView> getAllQuotesByBookId(Long bookId, Pageable pageable) {
         return this.quoteRepository.findAllByBookId(bookId, pageable)
                 .map(QuoteUtils::mapQuoteEntityToView);
+    }
+
+    @Transactional
+    public boolean toggleLike(Long quoteId, String username) {
+        UserEntity user = userRepository.findUserEntityByUsername(username).get();
+        QuoteEntity quote = quoteRepository.findById(quoteId).get();
+
+        if (user.getLikedQuotes().contains(quote)) {
+            user.getLikedQuotes().remove(quote);
+            quote.getLikedByUsers().remove(user);
+            quote.setLikes(quote.getLikes() - 1);
+        } else {
+            user.getLikedQuotes().add(quote);
+            quote.getLikedByUsers().add(user);
+            quote.setLikes(quote.getLikes() + 1);
+        }
+
+        userRepository.save(user);
+        quoteRepository.save(quote);
+
+        return user.getLikedQuotes().contains(quote);
     }
 }
