@@ -48,6 +48,12 @@
                         </i> Profile</a>
                 </li>
 
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/liked}">
+                        <i class="fa-solid fa-heart">
+                        </i> Liked</a>
+                </li>
+
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMINISTRATOR')">
                     <a class="nav-link" th:href="@{/admin/users}">
                         <i class="fa-solid fa-user-tie">

@@ -9,6 +9,7 @@ import com.softuni.quotependium.repositories.BookRepository;
 import com.softuni.quotependium.repositories.QuoteRepository;
 import com.softuni.quotependium.repositories.UserRepository;
 import com.softuni.quotependium.utils.QuoteUtils;
+import com.softuni.quotependium.utils.SecurityUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,6 +69,17 @@ public class QuoteService {
 
     public Page<QuoteView> getAllQuotesByBookId(Long bookId, Pageable pageable) {
         return this.quoteRepository.findAllByBookId(bookId, pageable)
+                .map(QuoteUtils::mapQuoteEntityToView);
+    }
+
+    public Page<QuoteView> getCurrentUserFavoriteQuotes(Pageable pageable) {
+        String currentUserUsername = SecurityUtils.getCurrentUser().getName();
+        Long currentUserId = this.userRepository
+                .findUserEntityByUsername(currentUserUsername)
+                .get()
+                .getId();
+
+        return this.quoteRepository.findQuotesLikedByUser(currentUserId, pageable)
                 .map(QuoteUtils::mapQuoteEntityToView);
     }
 
