@@ -19,7 +19,8 @@ public class QuoteUtils {
                         .map(AuthorEntity::getFullName)
                         .collect(Collectors.toList()))
                 .setBookTitle(quoteEntity.getBook().getTitle())
-                .setLikedByUserIds(quoteEntity.getLikedByUsers().stream().map(BaseEntity::getId).collect(Collectors.toSet()));
+                .setLikedByUserIds(quoteEntity.getLikedByUsers().stream().map(BaseEntity::getId).collect(Collectors.toSet()))
+                .setLikes(quoteEntity.getLikes());
     }
 
     public static QuoteView getNullPlaceholderQuoteView() {

@@ -12,6 +12,7 @@ function toggleLike(button, quoteId) {
                     button.textContent = button.textContent === "Like" ? "Liked" : "Like";
                     button.classList.toggle('like-button');
                     button.classList.toggle('liked-button');
+                    updateLikeCount(button, quoteId);
                     console.log("Like toggled successfully");
                 } else {
                     console.log("Button not found");
@@ -23,4 +24,20 @@ function toggleLike(button, quoteId) {
         .catch(error => {
             console.error("Error:", error);
         });
+}
+
+function updateLikeCount(button, quoteId) {
+    const likeCounterElement = document.querySelector(`small[data-quote-id='${quoteId}']`);
+    const likeText = likeCounterElement.textContent;
+    let likeCount = parseInt(likeText.split(' ')[0]);
+
+    const isLiked = button.classList.contains('liked-button');
+
+    if (isLiked) {
+        likeCount++;
+    } else {
+        likeCount--;
+    }
+
+    likeCounterElement.textContent = `${likeCount} likes.`;
 }

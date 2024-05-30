@@ -9,6 +9,16 @@ public class QuoteView {
     private List<String> authors;
     private String bookTitle;
     private Set<Long> likedByUserIds;
+    private Integer likes;
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public QuoteView setLikes(Integer likes) {
+        this.likes = likes;
+        return this;
+    }
 
     public Set<Long> getLikedByUserIds() {
         return likedByUserIds;

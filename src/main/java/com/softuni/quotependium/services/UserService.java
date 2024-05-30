@@ -52,7 +52,10 @@ public class UserService {
             return null;
         }
         String currentUserUsername = currentUser.getName();
-        return this.userRepository.findUserEntityByUsername(currentUserUsername).get().getId();
+        Optional<UserEntity> currentUserOptional = this.userRepository.findUserEntityByUsername(currentUserUsername);
+        return currentUserOptional.isPresent()
+                ? currentUserOptional.get().getId()
+                : null;
     }
 
     public boolean emailExists(String email) {

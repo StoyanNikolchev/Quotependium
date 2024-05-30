@@ -15,6 +15,9 @@
                 <p id="authors" th:text="${quote.getAuthorsFormatted()}"></p>
                 Book:
                 <p id="book-title" th:text="${quote.getBookTitle()}"></p>
+                <small th:attr="data-quote-id=${quote.getId()}"
+                       th:text="${quote.getLikes() + ' likes.'}">
+                </small>
 
                 <button sec:authorize="isAuthenticated()"
                         th:attr="data-quote-id=${quote.getId()}, class=${quote.likedByUserIds.contains(currentUserId) ? 'liked-button' : 'like-button'}"
