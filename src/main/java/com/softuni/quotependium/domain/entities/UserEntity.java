@@ -22,6 +22,9 @@ public class UserEntity extends BaseEntity {
     @Column(name = "full_name")
     private String fullName;
 
+    @Column(unique = true)
+    private String profilePictureName;
+
     @ManyToMany
     @JoinTable(
             name = "user_liked_quotes",
@@ -32,6 +35,15 @@ public class UserEntity extends BaseEntity {
 
     public Set<QuoteEntity> getLikedQuotes() {
         return likedQuotes;
+    }
+
+    public String getProfilePictureName() {
+        return profilePictureName;
+    }
+
+    public UserEntity setProfilePictureName(String profilePictureName) {
+        this.profilePictureName = profilePictureName;
+        return this;
     }
 
     public UserEntity setLikedQuotes(Set<QuoteEntity> likedQuotes) {

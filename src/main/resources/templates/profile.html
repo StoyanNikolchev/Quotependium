@@ -13,9 +13,24 @@
         <div class="col-md-6">
             <form th:action="@{/profile}"
                   th:method="POST"
+                  enctype="multipart/form-data"
                   th:object="${userProfile}"
             class="profile-form">
                 <h1 class="text-center mb-4">User Profile</h1>
+
+                <div class="mb-3 text-center">
+                    <img th:if="${userProfile.profilePictureName != null}" th:src="${userProfile.profilePictureName}"
+                         class="img-thumbnail mb-3" alt="Profile Picture" style="max-width: 150px;">
+                    <img th:unless="${userProfile.profilePictureName != null}" th:src="@{/images/placeholder.png}"
+                         class="img-thumbnail mb-3" alt="Placeholder Picture" style="max-width: 150px;">
+                    <input type="file" class="form-control" id="profilePicture" name="profilePicture" accept="image/*">
+                </div>
+
+                <div style="align-content: center" th:if="${bindingResult != null}">
+                    <div th:if="${bindingResult.hasGlobalErrors()}" class="text-danger">
+                        <div th:each="error : ${bindingResult.globalErrors}" th:text="${error.defaultMessage}"></div>
+                    </div>
+                </div>
 
                 <div class="mb-3">
                     <label for="inputUsername" class="form-label">Username</label>
@@ -25,12 +40,6 @@
                            id="inputUsername"
                            name="username"
                            required>
-
-                    <div th:if="${bindingResult != null}">
-                        <div th:if="${bindingResult.hasGlobalErrors()}" class="text-danger">
-                            <div th:each="error : ${bindingResult.globalErrors}" th:text="${error.defaultMessage}"></div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="mb-3">

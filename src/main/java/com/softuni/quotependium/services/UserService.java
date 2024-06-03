@@ -11,15 +11,29 @@ import com.softuni.quotependium.repositories.UserRoleRepository;
 import com.softuni.quotependium.utils.SecurityUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserService {
@@ -106,6 +120,57 @@ public class UserService {
         userRepository.save(userEntity);
     }
 
+    @Transactional
+    public void updateCurrentUserProfilePicture(MultipartFile profilePicture) throws IOException, URISyntaxException {
+        UserEntity currentUserEntity = getCurrentUserEntity();
+        String userId = currentUserEntity.getId().toString();
+
+        Resource resource = new ClassPathResource("static/profilePictures");
+        File profilePicturesDir = resource.getFile();
+
+        try (Stream<Path> stream = Files.walk(profilePicturesDir.toPath())) {
+            stream.filter(path -> path.getFileName().toString().startsWith(userId + "_"))
+                    .forEach(path -> {
+                        try {
+                            Files.deleteIfExists(path);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String fileName = userId + "_" + profilePicture.getOriginalFilename();
+        Path filePath = profilePicturesDir.toPath().resolve(fileName);
+        Files.copy(profilePicture.getInputStream(), filePath);
+
+        String relativeFilePath = Paths.get("profilePictures", fileName).toString();
+        currentUserEntity.setProfilePictureName(relativeFilePath);
+        userRepository.save(currentUserEntity);
+    }
+
+    public Resource loadProfilePicture(Long id) {
+        UserEntity user = this.userRepository.findById(id).orElse(null);
+        if (user == null || user.getProfilePictureName() == null) {
+            return null;
+        }
+
+        Path filePath = Paths.get(user.getProfilePictureName());
+
+        try {
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                return null;
+            }
+
+        } catch (MalformedURLException e) {
+            return null;
+        }
+    }
+
     private List<UserRoleEntity> convertStringRolesToUserRoleEntities(List<String> stringRoles) {
         return stringRoles.stream()
                 .map(role -> {
@@ -113,5 +178,9 @@ public class UserService {
                     return this.userRoleRepository.findByRole(enumValue);
                 })
                 .collect(Collectors.toList());
+    }
+
+    public boolean userNameIsTheSame(String newUsername) {
+        return getCurrentUserEntity().getUsername().equals(newUsername.trim());
     }
 }

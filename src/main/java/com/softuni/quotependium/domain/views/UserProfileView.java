@@ -6,6 +6,16 @@ public class UserProfileView {
     private String username;
     private String email;
     private String fullName;
+    private String profilePictureName;
+
+    public String getProfilePictureName() {
+        return profilePictureName;
+    }
+
+    public UserProfileView setProfilePictureName(String profilePictureName) {
+        this.profilePictureName = profilePictureName;
+        return this;
+    }
 
     public String getUsername() {
         return username;
@@ -38,6 +48,7 @@ public class UserProfileView {
         return new UserProfileView()
                 .setEmail(userEntity.getEmail())
                 .setUsername(userEntity.getUsername())
-                .setFullName(userEntity.getFullName());
+                .setFullName(userEntity.getFullName())
+                .setProfilePictureName(userEntity.getProfilePictureName());
     }
 }
