@@ -6,14 +6,14 @@ public class UserProfileView {
     private String username;
     private String email;
     private String fullName;
-    private String profilePictureName;
+    private String profilePicturePath;
 
-    public String getProfilePictureName() {
-        return profilePictureName;
+    public String getProfilePicturePath() {
+        return profilePicturePath;
     }
 
-    public UserProfileView setProfilePictureName(String profilePictureName) {
-        this.profilePictureName = profilePictureName;
+    public UserProfileView setProfilePicturePath(String profilePicturePath) {
+        this.profilePicturePath = profilePicturePath;
         return this;
     }
 
@@ -49,6 +49,6 @@ public class UserProfileView {
                 .setEmail(userEntity.getEmail())
                 .setUsername(userEntity.getUsername())
                 .setFullName(userEntity.getFullName())
-                .setProfilePictureName(userEntity.getProfilePictureName());
+                .setProfilePicturePath(userEntity.getProfilePicturePath());
     }
 }

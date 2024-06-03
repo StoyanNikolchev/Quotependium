@@ -23,7 +23,7 @@ public class UserEntity extends BaseEntity {
     private String fullName;
 
     @Column(unique = true)
-    private String profilePictureName;
+    private String profilePicturePath;
 
     @ManyToMany
     @JoinTable(
@@ -37,12 +37,12 @@ public class UserEntity extends BaseEntity {
         return likedQuotes;
     }
 
-    public String getProfilePictureName() {
-        return profilePictureName;
+    public String getProfilePicturePath() {
+        return profilePicturePath;
     }
 
-    public UserEntity setProfilePictureName(String profilePictureName) {
-        this.profilePictureName = profilePictureName;
+    public UserEntity setProfilePicturePath(String profilePicturePath) {
+        this.profilePicturePath = profilePicturePath;
         return this;
     }
 

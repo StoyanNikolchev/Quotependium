@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -146,17 +145,17 @@ public class UserService {
         Files.copy(profilePicture.getInputStream(), filePath);
 
         String relativeFilePath = Paths.get("profilePictures", fileName).toString();
-        currentUserEntity.setProfilePictureName(relativeFilePath);
+        currentUserEntity.setProfilePicturePath(relativeFilePath);
         userRepository.save(currentUserEntity);
     }
 
     public Resource loadProfilePicture(Long id) {
         UserEntity user = this.userRepository.findById(id).orElse(null);
-        if (user == null || user.getProfilePictureName() == null) {
+        if (user == null || user.getProfilePicturePath() == null) {
             return null;
         }
 
-        Path filePath = Paths.get(user.getProfilePictureName());
+        Path filePath = Paths.get(user.getProfilePicturePath());
 
         try {
             Resource resource = new UrlResource(filePath.toUri());

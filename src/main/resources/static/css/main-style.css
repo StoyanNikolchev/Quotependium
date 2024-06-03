@@ -1,8 +1,8 @@
 .navbar {
-    background-image: linear-gradient(90deg, rgba(109,64,22,1) 0%, rgba(255,255,255,1) 100%);
+    background-image: linear-gradient(90deg, rgba(109, 64, 22, 1) 0%, rgba(255, 255, 255, 1) 100%);
 }
 
-.navbar-brand{
+.navbar-brand {
     font-size: larger !important;
     font-weight: bold;
     color: #fff !important;
@@ -50,7 +50,8 @@ body {
 }
 
 .login-form, .register-form, .profile-form, .check-book-form, .add-quote-form, .add-book-form {
-    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(193,193,193,1) 100%); !important;
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(193, 193, 193, 1) 100%);
+!important;
     padding: 50px;
     border-radius: 20px;
     margin-top: 50px;
@@ -70,16 +71,19 @@ body {
 #quote-container {
     margin-top: 20px;
 }
+
 #quote-content, #random-quote-content {
     font-size: 1.25rem;
 }
+
 #authors, #book-title, #random-quote-authors, #random-quote-book {
     font-style: italic;
     color: #6c757d;
 }
 
 .card {
-    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(193,193,193,1) 100%); !important;
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(193, 193, 193, 1) 100%);
+!important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -99,7 +103,7 @@ body {
 }
 
 .browse-menu {
-    background: radial-gradient(circle, rgba(176,144,104,1) 0%, rgba(148,101,36,1) 100%);
+    background: radial-gradient(circle, rgba(176, 144, 104, 1) 0%, rgba(148, 101, 36, 1) 100%);
 }
 
 .browse-menu .dropdown-item:hover {
@@ -116,15 +120,19 @@ body {
     padding-top: 50px;
     text-align: center;
 }
+
 .book-item, .author-item {
     cursor: pointer;
 }
+
 .book-item:hover {
     background-color: #f8f9fa;
 }
+
 .book-link, .author-link {
     color: #343a40;
 }
+
 .book-link:hover {
     text-decoration: none;
     color: #007bff;
@@ -172,4 +180,3 @@ body {
     background-color: green;
     color: white;
 }
-
