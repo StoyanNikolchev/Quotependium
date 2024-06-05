@@ -9,6 +9,9 @@ import com.softuni.quotependium.domain.views.QuoteView;
 import com.softuni.quotependium.repositories.BookRepository;
 import com.softuni.quotependium.repositories.QuoteRepository;
 import com.softuni.quotependium.repositories.UserRepository;
+import com.softuni.quotependium.testUtils.TestUtils;
+import com.softuni.quotependium.utils.QuoteUtils;
+import com.softuni.quotependium.utils.SecurityUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -17,14 +20,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.security.Principal;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class QuoteServiceTest {
@@ -182,16 +182,88 @@ public class QuoteServiceTest {
         //ASSERT
         assertEquals(quoteEntities.size(), result.getContent().size());
         assertEquals(quoteEntities.get(0)
-                .getBook().getAuthors()
-                .stream().map(AuthorEntity::getFullName)
-                .collect(Collectors.toList()),
+                        .getBook().getAuthors()
+                        .stream().map(AuthorEntity::getFullName)
+                        .collect(Collectors.toList()),
                 result.getContent().get(0).getAuthors());
 
         assertEquals(quoteEntities.get(1)
-                .getBook().getAuthors()
-                .stream()
-                .map(AuthorEntity::getFullName)
-                .collect(Collectors.toList()),
+                        .getBook().getAuthors()
+                        .stream()
+                        .map(AuthorEntity::getFullName)
+                        .collect(Collectors.toList()),
                 result.getContent().get(1).getAuthors());
+    }
+
+    @Test
+    public void testGetCurrentUserFavoriteQuotes() {
+        //ARRANGE
+        UserEntity user = TestUtils.getTestUserEntity();
+        Pageable pageable = PageRequest.of(0, 10);
+        List<QuoteEntity> likedQuotes = user.getLikedQuotes().stream().toList();
+
+        try (MockedStatic<SecurityUtils> securityUtils = mockStatic(SecurityUtils.class);
+             MockedStatic<QuoteUtils> quoteUtils = mockStatic(QuoteUtils.class)) {
+
+            Principal mockedPrincipal = mock(Principal.class);
+            securityUtils.when(SecurityUtils::getCurrentUser).thenReturn(mockedPrincipal);
+            when(mockedPrincipal.getName()).thenReturn("Pesho");
+
+            when(userRepository.findUserEntityByUsername("Pesho")).thenReturn(Optional.of(user));
+            when(quoteRepository.findQuotesLikedByUser(1L, pageable)).thenReturn(new PageImpl<>(likedQuotes));
+
+            quoteUtils.when(() -> QuoteUtils.mapQuoteEntityToView(any(QuoteEntity.class)))
+                    .thenAnswer(invocation -> {
+                        QuoteEntity quoteEntity = invocation.getArgument(0);
+                        return new QuoteView()
+                                .setId(quoteEntity.getId())
+                                .setLikes(quoteEntity.getLikes())
+                                .setText(quoteEntity.getText());
+                    });
+
+            // Act
+            Page<QuoteView> result = quoteService.getCurrentUserFavoriteQuotes(pageable);
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(2, result.getContent().size());
+
+            assertEquals("Test quote text", result.getContent().get(0).getText());
+            assertEquals(3L, result.getContent().get(0).getId());
+
+            assertEquals("Test quote text 2", result.getContent().get(1).getText());
+            assertEquals(5L, result.getContent().get(1).getId());
+        }
+    }
+
+    @Test
+    public void whenUserAlreadyLikedQuote_toggleLike_shouldUnlikeQuote() {
+        //ARRANGE
+        UserEntity user = TestUtils.getTestUserEntity();
+        String username = user.getUsername();
+
+        //Ensuring the collection is mutable
+        user.setLikedQuotes(new HashSet<>(user.getLikedQuotes()));
+
+        QuoteEntity quote = user.getLikedQuotes().stream().findFirst().get();
+        Long quoteId = quote.getId();
+
+        //Ensuring the collection is mutable
+        quote.setLikedByUsers(new HashSet<>(quote.getLikedByUsers()));
+
+        int initialLikes = quote.getLikes();
+
+        when(userRepository.findUserEntityByUsername(username)).thenReturn(Optional.of(user));
+        when(quoteRepository.findById(quoteId)).thenReturn(Optional.of(quote));
+
+        //ACT
+        quoteService.toggleLike(quoteId, username);
+
+        //ASSERT
+        assertFalse(user.getLikedQuotes().contains(quote));
+        assertFalse(quote.getLikedByUsers().contains(user));
+        assertEquals(initialLikes - 1, quote.getLikes());
+        verify(userRepository, times(1)).save(user);
+        verify(quoteRepository, times(1)).save(quote);
     }
 }

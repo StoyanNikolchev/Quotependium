@@ -14,7 +14,7 @@ public class PastOrPresentYearValidator implements ConstraintValidator<PastOrPre
     @Override
     public boolean isValid(Integer year, ConstraintValidatorContext context) {
         if (year == null) {
-            return false; // Consider null as invalid
+            return false;
         }
 
         int currentYear = LocalDate.now().getYear();
