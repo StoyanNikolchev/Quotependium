@@ -266,4 +266,33 @@ public class QuoteServiceTest {
         verify(userRepository, times(1)).save(user);
         verify(quoteRepository, times(1)).save(quote);
     }
+
+    @Test
+    public void whenQuoteIsNotLiked_toggleLike_shouldLikeQuote() {
+        //ARRANGE
+        UserEntity user = TestUtils.getTestUserEntity();
+        String username = user.getUsername();
+
+        //Resetting the user's liked quotes
+        user.setLikedQuotes(new HashSet<>());
+
+        Long quoteId = 4L;
+        QuoteEntity quote = new QuoteEntity()
+                .setLikes(3)
+                .setLikedByUsers(new HashSet<>())
+                .setId(quoteId);
+
+        when(userRepository.findUserEntityByUsername(username)).thenReturn(Optional.of(user));
+        when(quoteRepository.findById(quoteId)).thenReturn(Optional.of(quote));
+
+        //ACT
+        quoteService.toggleLike(quoteId, username);
+
+        //ASSERT
+        assertTrue(user.getLikedQuotes().contains(quote));
+        assertTrue(quote.getLikedByUsers().contains(user));
+        assertEquals(4, quote.getLikes());
+        verify(userRepository, times(1)).save(user);
+        verify(quoteRepository, times(1)).save(quote);
+    }
 }
