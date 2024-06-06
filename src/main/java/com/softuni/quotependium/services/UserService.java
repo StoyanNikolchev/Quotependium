@@ -9,7 +9,6 @@ import com.softuni.quotependium.domain.views.UserProfileView;
 import com.softuni.quotependium.repositories.UserRepository;
 import com.softuni.quotependium.repositories.UserRoleRepository;
 import com.softuni.quotependium.utils.SecurityUtils;
-import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;

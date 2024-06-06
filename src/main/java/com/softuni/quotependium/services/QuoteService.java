@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static com.softuni.quotependium.utils.FormattingUtils.removeQuotes;
 import static com.softuni.quotependium.utils.QuoteUtils.getNullPlaceholderQuoteView;
 import static com.softuni.quotependium.utils.QuoteUtils.mapQuoteEntityToView;
@@ -102,5 +104,11 @@ public class QuoteService {
         quoteRepository.save(quote);
 
         return user.getLikedQuotes().contains(quote);
+    }
+
+    public QuoteView findQuoteViewById(Long id) {
+        Optional<QuoteEntity> quoteEntity = this.quoteRepository.findById(id);
+
+        return quoteEntity.map(QuoteUtils::mapQuoteEntityToView).orElse(null);
     }
 }
