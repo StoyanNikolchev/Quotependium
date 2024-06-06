@@ -8,16 +8,24 @@ import com.softuni.quotependium.domain.enums.UserRoleEnum;
 import com.softuni.quotependium.domain.views.UserProfileView;
 import com.softuni.quotependium.repositories.UserRepository;
 import com.softuni.quotependium.repositories.UserRoleRepository;
+import com.softuni.quotependium.testUtils.TestUtils;
 import com.softuni.quotependium.utils.SecurityUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +48,8 @@ public class UserServiceTest {
     @Mock
     private ModelMapper modelMapper;
 
+    @TempDir
+    Path tempDir;
     @InjectMocks
     private UserService userService;
 
@@ -237,5 +247,71 @@ public class UserServiceTest {
         ArgumentCaptor<UserEntity> capturedUserEntity = ArgumentCaptor.forClass(UserEntity.class);
         verify(userRepository, times(1)).save(capturedUserEntity.capture());
         assertEquals(roleEntities, capturedUserEntity.getValue().getRoles());
+    }
+
+    @Test
+    public void testUpdateCurrentUserProfilePicture() throws IOException{
+        //ARRANGE
+        try (MockedStatic<SecurityUtils> mockedSecurityUtils = mockStatic(SecurityUtils.class)) {
+            Path profilePicturesDir = tempDir.resolve("static/profilePicturesTest");
+            Files.createDirectories(profilePicturesDir);
+
+            UserEntity currentUserEntity = TestUtils.getTestUserEntity();
+            MockMultipartFile profilePicture = new MockMultipartFile("profilePicture", "profilePicture.jpg", "image/jpeg", "some-image".getBytes());
+
+            Principal mockedPrincipal = mock(Principal.class);
+            mockedSecurityUtils.when(SecurityUtils::getCurrentUser).thenReturn(mockedPrincipal);
+            when(mockedPrincipal.getName()).thenReturn("Pesho");
+            when(userRepository.findUserEntityByUsername("Pesho")).thenReturn(Optional.of(currentUserEntity));
+            when(userRepository.findById(1L)).thenReturn(Optional.of(currentUserEntity));
+
+            ClassPathResource mockResource = mock(ClassPathResource.class);
+            when(mockResource.getFile()).thenReturn(profilePicturesDir.toFile());
+            ReflectionTestUtils.setField(userService, "profilePicturesResource", mockResource);
+
+            //ACT
+            userService.updateCurrentUserProfilePicture(profilePicture);
+
+            //ASSERT
+            Path savedFilePath = tempDir.resolve("static/profilePicturesTest/1_profilePicture.jpg");
+            assertTrue(Files.exists(savedFilePath));
+            assertEquals("profilePictures\\1_profilePicture.jpg", currentUserEntity.getProfilePicturePath());
+            verify(userRepository).save(currentUserEntity);
+        }
+    }
+
+    @Test
+    public void when_userHasProfilePicture_updateCurrentUserProfilePicture_shouldOverrideIt() throws IOException{
+        //ARRANGE
+        try (MockedStatic<SecurityUtils> mockedSecurityUtils = mockStatic(SecurityUtils.class)) {
+            Path profilePicturesDir = tempDir.resolve("static/profilePicturesTest");
+            Files.createDirectories(profilePicturesDir);
+
+            Path oldProfilePicturePath = profilePicturesDir.resolve("1_peshoPic.jpg");
+            Files.createFile(oldProfilePicturePath);
+
+            UserEntity currentUserEntity = TestUtils.getTestUserEntity().setProfilePicturePath("profilePicturesTest\\1_peshoPic.jpg");
+            MockMultipartFile profilePicture = new MockMultipartFile("profilePicture", "profilePicture.jpg", "image/jpeg", "some-image".getBytes());
+
+            Principal mockedPrincipal = mock(Principal.class);
+            mockedSecurityUtils.when(SecurityUtils::getCurrentUser).thenReturn(mockedPrincipal);
+            when(mockedPrincipal.getName()).thenReturn("Pesho");
+            when(userRepository.findUserEntityByUsername("Pesho")).thenReturn(Optional.of(currentUserEntity));
+            when(userRepository.findById(1L)).thenReturn(Optional.of(currentUserEntity));
+
+            ClassPathResource mockResource = mock(ClassPathResource.class);
+            when(mockResource.getFile()).thenReturn(profilePicturesDir.toFile());
+            ReflectionTestUtils.setField(userService, "profilePicturesResource", mockResource);
+
+            //ACT
+            userService.updateCurrentUserProfilePicture(profilePicture);
+
+            //ASSERT
+            Path savedFilePath = tempDir.resolve("static/profilePicturesTest/1_profilePicture.jpg");
+            assertTrue(Files.exists(savedFilePath));
+            assertFalse(Files.exists(oldProfilePicturePath));
+            assertEquals("profilePictures\\1_profilePicture.jpg", currentUserEntity.getProfilePicturePath());
+            verify(userRepository).save(currentUserEntity);
+        }
     }
 }

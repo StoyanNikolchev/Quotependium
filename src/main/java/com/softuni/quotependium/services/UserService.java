@@ -9,11 +9,11 @@ import com.softuni.quotependium.domain.views.UserProfileView;
 import com.softuni.quotependium.repositories.UserRepository;
 import com.softuni.quotependium.repositories.UserRoleRepository;
 import com.softuni.quotependium.utils.SecurityUtils;
+import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,8 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,13 +39,25 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final ModelMapper modelMapper;
+    private Resource profilePicturesResource;
+
 
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper) {
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper) throws IOException {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.modelMapper = modelMapper;
+        this.profilePicturesResource = initializeProfilePicturesResource();
+    }
+
+    private Resource initializeProfilePicturesResource() throws IOException {
+        String path = "target/classes/static/profilePictures";
+        Path directoryPath = Path.of(path);
+        if (!Files.exists(directoryPath)) {
+            Files.createDirectories(directoryPath);
+        }
+        return new ClassPathResource("static/profilePictures");
     }
 
     public void registerUser(UserRegisterFormDto userRegisterFormDto) {
@@ -120,12 +130,11 @@ public class UserService {
     }
 
     @Transactional
-    public void updateCurrentUserProfilePicture(MultipartFile profilePicture) throws IOException, URISyntaxException {
+    public void updateCurrentUserProfilePicture(MultipartFile profilePicture) throws IOException {
         UserEntity currentUserEntity = getCurrentUserEntity();
         String userId = currentUserEntity.getId().toString();
 
-        Resource resource = new ClassPathResource("static/profilePictures");
-        File profilePicturesDir = resource.getFile();
+        File profilePicturesDir = profilePicturesResource.getFile();
 
         try (Stream<Path> stream = Files.walk(profilePicturesDir.toPath())) {
             stream.filter(path -> path.getFileName().toString().startsWith(userId + "_"))
@@ -147,27 +156,6 @@ public class UserService {
         String relativeFilePath = Paths.get("profilePictures", fileName).toString();
         currentUserEntity.setProfilePicturePath(relativeFilePath);
         userRepository.save(currentUserEntity);
-    }
-
-    public Resource loadProfilePicture(Long id) {
-        UserEntity user = this.userRepository.findById(id).orElse(null);
-        if (user == null || user.getProfilePicturePath() == null) {
-            return null;
-        }
-
-        Path filePath = Paths.get(user.getProfilePicturePath());
-
-        try {
-            Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                return null;
-            }
-
-        } catch (MalformedURLException e) {
-            return null;
-        }
     }
 
     private List<UserRoleEntity> convertStringRolesToUserRoleEntities(List<String> stringRoles) {
