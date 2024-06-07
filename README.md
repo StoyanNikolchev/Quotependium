@@ -8,27 +8,39 @@ Quotependium is a web application designed for managing and sharing quotes from 
 
 ## Features
 
-- User Contributions: Add and manage quotes and books.
-- User Profile Management: Edit usernames and profile pictures.
-- Quote Management: Save favourite quotes to account.
-- Random Quote Generator: Display random quotes on the front page.
-- Quote of the Day: Scheduled daily quote display.
-- Admin Panel: Manage user roles and permissions.
-- Security: User authentication and authorization using Spring Security.
+- **User Contributions**: Add and manage quotes and books.
+- **User Profile Management**: Edit usernames and profile pictures.
+- **Quote Management**: Save favourite quotes to account.
+- **Random Quote Generator**: Display random quotes on the front page.
+- **Quote of the Day**: Scheduled daily quote display.
+- **Admin Panel**: Manage user roles and permissions.
+- **Security**: User authentication and authorization using Spring Security.
 
 ## Technologies Used
 
-- Backend: Spring Boot, Hibernate, Fetch API
-- Frontend: HTML, CSS, JavaScript, Thymeleaf, Bootstrap
-- Database: MySQL
-- Security: Spring Security
+- **Backend**: Spring Boot, Hibernate, Fetch API
+- **Frontend**: HTML, CSS, JavaScript, Thymeleaf, Bootstrap
+- **Database**: MySQL
+- **Security**: Spring Security
+
+## API Endpoints
+
+### Get Quote by ID
+- **Endpoint**: `/api/quotes/{id}`
+- **Method**: GET
+- **Description**: Retrieve a specific quote by its ID.
+
+### Get Random Quote
+- **Endpoint**: `/api/quotes/random`
+- **Method**: GET
+- **Description**: Retrieve a random quote.
 
 ## Screenshots
 ### Home Page
 ![Home Page](screenshots/home-page.png)
 
 ### Registration
-- Registration and login pages have field validations
+Registration and login pages have field validations
 ![Registration](screenshots/register-page.png)
 
 ### User Profile
@@ -38,11 +50,11 @@ Quotependium is a web application designed for managing and sharing quotes from 
 ![Admin Panel](screenshots/admin-panel-page.png)
 
 ### Submit ISBN
-- Accepts 13-digit ISBNs. They can be entered either as clean numbers, with spaces, with dashes, or with "ISBN" at the start. The backend converts them to clean numbers.
+Accepts 13-digit ISBNs. They can be entered either as clean numbers, with spaces, with dashes, or with "ISBN" at the start. The backend converts them to clean numbers.
 ![Submit ISBN](screenshots/submit-isbn-page.png)
 
 ### Submit New Book
-- When the book with the given ISBN is not in the database, Quotependium prompts the user to enter information about it before submitting their quote.
+When the book with the given ISBN is not in the database, Quotependium prompts the user to enter information about it before submitting their quote.
 ![Submit New Book](screenshots/submit-book.png)
 
 ### Browse Quotes, Books, and Authors
