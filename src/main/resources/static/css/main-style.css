@@ -180,3 +180,9 @@ body {
     background-color: green;
     color: white;
 }
+
+.profile-picture {
+    width: 150px;
+    height: 150px !important;
+    border-radius: 50% !important;
+}
