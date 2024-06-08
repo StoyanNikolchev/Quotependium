@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/head}">
 </head>
 <body>
@@ -15,6 +15,12 @@
             <div id="random-quote-content" th:text="${quoteOfTheDay.getContentWithQuotationMarks}" class="mb-3"></div>
             <div id="random-quote-authors" th:text="${quoteOfTheDay.getAuthorsFormatted}"></div>
             <div id="random-quote-book" th:text="${quoteOfTheDay.getBookTitle}"></div>
+            <button class="js-like-button"
+                    sec:authorize="isAuthenticated()"
+                    th:attr="data-quote-id=${quoteOfTheDay.getId()}, class=${quoteOfTheDay.likedByUserIds.contains(currentUserId) ? 'liked-button' : 'like-button'}"
+                    th:text="${quoteOfTheDay.getLikedByUserIds.contains(currentUserId) ? 'Liked' : 'Like'}"
+                    th:onclick="|toggleLike(this, ${quoteOfTheDay.getId()})|">
+            </button>
         </div>
     </div>
 
@@ -29,5 +35,6 @@
     </div>
 </div>
 <script th:src="@{/js/fetchRandomQuote.js}"></script>
+<script th:src="@{/js/toggleLike.js}"></script>
 </body>
 </html>
