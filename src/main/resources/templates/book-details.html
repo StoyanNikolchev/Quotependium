@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/head}">
 </head>
 <body>
@@ -27,6 +27,17 @@
         <div class="card-body">
             <div class="card-body d-flex flex-column align-items-center justify-content-center">
                 <p id="quote-content" th:text="${quote.getContentWithQuotationMarks()}"></p>
+
+                <small th:attr="data-quote-id=${quote.getId()}"
+                       th:text="'Liked by: ' + ${quote.getLikes()}"}>
+                </small>
+
+                <button class="js-like-button"
+                        sec:authorize="isAuthenticated()"
+                        th:attr="data-quote-id=${quote.getId()}, class=${quote.likedByUserIds.contains(currentUserId) ? 'liked-button' : 'like-button'}"
+                        th:text="${quote.getLikedByUserIds.contains(currentUserId) ? 'Liked' : 'Like'}"
+                        th:onclick="|toggleLike(this, ${quote.getId()})|">
+                </button>
             </div>
         </div>
     </div>
@@ -51,6 +62,8 @@
         </ul>
     </nav>
 </div>
+
+<script th:src="@{/js/toggleLike.js}"></script>
 
 </body>
 </html>

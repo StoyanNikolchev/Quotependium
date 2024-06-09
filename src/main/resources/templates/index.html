@@ -15,6 +15,11 @@
             <div id="random-quote-content" th:text="${quoteOfTheDay.getContentWithQuotationMarks}" class="mb-3"></div>
             <div id="random-quote-authors" th:text="${quoteOfTheDay.getAuthorsFormatted}"></div>
             <div id="random-quote-book" th:text="${quoteOfTheDay.getBookTitle}"></div>
+
+            <small th:attr="data-quote-id=${quoteOfTheDay.getId()}"
+                   th:text="'Liked by: ' + ${quoteOfTheDay.getLikes()}"}>
+            </small>
+
             <button class="js-like-button"
                     sec:authorize="isAuthenticated()"
                     th:attr="data-quote-id=${quoteOfTheDay.getId()}, class=${quoteOfTheDay.likedByUserIds.contains(currentUserId) ? 'liked-button' : 'like-button'}"

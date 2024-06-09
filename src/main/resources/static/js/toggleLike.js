@@ -29,7 +29,7 @@ function toggleLike(button, quoteId) {
 function updateLikeCount(button, quoteId) {
     const likeCounterElement = document.querySelector(`small[data-quote-id='${quoteId}']`);
     const likeText = likeCounterElement.textContent;
-    let likeCount = parseInt(likeText.split(' ')[0]);
+    let likeCount = parseInt(likeText.split(': ')[1]);
 
     const isLiked = button.classList.contains('liked-button');
 
@@ -39,5 +39,5 @@ function updateLikeCount(button, quoteId) {
         likeCount--;
     }
 
-    likeCounterElement.textContent = `${likeCount} likes.`;
+    likeCounterElement.textContent = `Liked by: ${likeCount}`;
 }

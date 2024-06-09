@@ -20,9 +20,9 @@
 
                 <div class="mb-3 text-center">
                     <img th:if="${userProfile.profilePicturePath != null}" th:src="${userProfile.profilePicturePath}"
-                         class="img-thumbnail mb-3 rounded-circle" alt="Profile Picture" style="max-width: 150px;">
+                         class="profile-picture img-thumbnail mb-3 rounded-circle" alt="Profile Picture">
                     <img th:unless="${userProfile.profilePicturePath != null}" th:src="@{/images/placeholder.png}"
-                         class="img-thumbnail mb-3 rounded-circle" alt="Placeholder Picture">
+                         class="profile-picture img-thumbnail mb-3 rounded-circle" alt="Placeholder Picture">
                     <input type="file" class="form-control" id="profilePicture" name="profilePicture" accept="image/*">
                 </div>
 

@@ -104,6 +104,12 @@ public class BrowseController {
 
         Page<BookTitleView> allTitlesPage = this.bookService.getAllTitles(pageable);
         model.addAttribute("bookTitles", allTitlesPage);
+
+        Long currentUserId = this.userService.getCurrentUserId();
+        if (currentUserId != null) {
+            model.addAttribute("currentUserId", currentUserId);
+        }
+
         return "browse-books";
     }
 
