@@ -16,16 +16,15 @@
                 Book:
                 <p id="book-title" th:text="${quote.getBookTitle()}"></p>
 
-                <small th:attr="data-quote-id=${quote.getId()}"
-                       th:text="'Liked by: ' + ${quote.getLikes()}"}>
+                <small th:id="'like-counter-' + ${quote.getId()}"
+                       th:text="'Liked by: ' + ${quote.getLikes()}">>
                 </small>
 
                 <button class="js-like-button"
                         sec:authorize="isAuthenticated()"
                         th:attr="data-quote-id=${quote.getId()}, class=${quote.likedByUserIds.contains(currentUserId) ? 'liked-button' : 'like-button'}"
                         th:text="${quote.getLikedByUserIds.contains(currentUserId) ? 'Liked' : 'Like'}"
-                        th:onclick="|toggleLike(this, ${quote.getId()})|">
-                </button>
+                        th:onclick="|toggleLike(this, ${quote.getId()}, document.getElementById('like-counter-${quote.getId()}'))|">              </button>
             </div>
         </div>
     </div>

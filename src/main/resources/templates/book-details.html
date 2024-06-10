@@ -28,19 +28,19 @@
             <div class="card-body d-flex flex-column align-items-center justify-content-center">
                 <p id="quote-content" th:text="${quote.getContentWithQuotationMarks()}"></p>
 
-                <small th:attr="data-quote-id=${quote.getId()}"
-                       th:text="'Liked by: ' + ${quote.getLikes()}"}>
+                <small th:id="'like-counter-' + ${quote.getId()}"
+                       th:text="'Liked by: ' + ${quote.getLikes()}">>
                 </small>
 
                 <button class="js-like-button"
                         sec:authorize="isAuthenticated()"
                         th:attr="data-quote-id=${quote.getId()}, class=${quote.likedByUserIds.contains(currentUserId) ? 'liked-button' : 'like-button'}"
                         th:text="${quote.getLikedByUserIds.contains(currentUserId) ? 'Liked' : 'Like'}"
-                        th:onclick="|toggleLike(this, ${quote.getId()})|">
-                </button>
+                        th:onclick="|toggleLike(this, ${quote.getId()}, document.getElementById('like-counter-${quote.getId()}'))|"></button>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <div class="container mt-5 page-nav">
@@ -49,15 +49,23 @@
 
             <li class="page-item" th:classappend="${quotes.isFirst() ? 'disabled' : ''}">
                 <a th:if="${quotes.isFirst()}" class="page-link" href="#" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
-                <a th:unless="${quotes.isFirst()}" class="page-link" th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()})}" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
+                <a th:unless="${quotes.isFirst()}" class="page-link"
+                   th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()})}" aria-label="First"><span
+                        aria-hidden="true">&laquo;</span></a>
             </li>
 
-            <li class="page-item"><a class="page-link" th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()}, page=${quotes.number - 1})}" th:if="${!quotes.first}">Previous</a></li>
-            <li class="page-item"><a class="page-link" th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()}, page=${quotes.number + 1})}" th:if="${!quotes.last}">Next</a></li>
+            <li class="page-item"><a class="page-link"
+                                     th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()}, page=${quotes.number - 1})}"
+                                     th:if="${!quotes.first}">Previous</a></li>
+            <li class="page-item"><a class="page-link"
+                                     th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()}, page=${quotes.number + 1})}"
+                                     th:if="${!quotes.last}">Next</a></li>
 
             <li class="page-item" th:classappend="${quotes.isLast() ? 'disabled' : ''}">
                 <a th:if="${quotes.isLast()}" class="page-link" href="#" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
-                <a th:unless="${quotes.isLast()}" class="page-link" th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()},page=${quotes.getTotalPages() - 1})}" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+                <a th:unless="${quotes.isLast()}" class="page-link"
+                   th:href="@{'/browse/books/' + ${book.id}(size=${quotes.getSize()},page=${quotes.getTotalPages() - 1})}"
+                   aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
             </li>
         </ul>
     </nav>

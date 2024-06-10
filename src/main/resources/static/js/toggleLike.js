@@ -1,4 +1,4 @@
-function toggleLike(button, quoteId) {
+function toggleLike(button, quoteId, likeCounterElement) {
     fetch('/like-quote/' + quoteId, {
         method: 'POST',
         headers: {
@@ -12,7 +12,7 @@ function toggleLike(button, quoteId) {
                     button.textContent = button.textContent === "Like" ? "Liked" : "Like";
                     button.classList.toggle('like-button');
                     button.classList.toggle('liked-button');
-                    updateLikeCount(button, quoteId);
+                    updateLikeCount(button, likeCounterElement);
                     console.log("Like toggled successfully");
                 } else {
                     console.log("Button not found");
@@ -26,8 +26,7 @@ function toggleLike(button, quoteId) {
         });
 }
 
-function updateLikeCount(button, quoteId) {
-    const likeCounterElement = document.querySelector(`small[data-quote-id='${quoteId}']`);
+function updateLikeCount(button, likeCounterElement) {
     const likeText = likeCounterElement.textContent;
     let likeCount = parseInt(likeText.split(': ')[1]);
 
