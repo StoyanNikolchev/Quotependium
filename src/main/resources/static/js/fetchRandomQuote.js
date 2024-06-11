@@ -12,20 +12,22 @@ function fetchRandomQuote() {
             authorsElement.textContent = `Authors: ${randomQuote.authors.join(', ')}`;
             bookTitleElement.textContent = `${randomQuote.bookTitle}`;
 
-            likeButton.setAttribute('data-quote-id', randomQuote.id);
-            likeButton.setAttribute('onclick', `toggleLike(this, ${randomQuote.id}, document.getElementById('generator-like-counter'))`);
+            if (likeButton) {
+                likeButton.setAttribute('data-quote-id', randomQuote.id);
+                likeButton.setAttribute('onclick', `toggleLike(this, ${randomQuote.id}, document.getElementById('generator-like-counter'))`);
 
-            if (randomQuote.likedByUserIds.includes(currentUserId)) {
-                likeButton.textContent = 'Liked';
-                likeButton.classList.add('liked-button');
-                likeButton.classList.remove('like-button');
-            } else {
-                likeButton.textContent = 'Like';
-                likeButton.classList.add('like-button');
-                likeButton.classList.remove('liked-button');
+                if (randomQuote.likedByUserIds.includes(currentUserId)) {
+                    likeButton.textContent = 'Liked';
+                    likeButton.classList.add('liked-button');
+                    likeButton.classList.remove('like-button');
+                } else {
+                    likeButton.textContent = 'Like';
+                    likeButton.classList.add('like-button');
+                    likeButton.classList.remove('liked-button');
+                }
             }
 
-            likeCounter.textContent = `Liked by: ${randomQuote.likedByUserIds.length}`;
+            likeCounter.textContent = `Liked by: ${randomQuote.likes}`;
         })
         .catch(error => console.error('Error fetching random quote:', error));
 }
