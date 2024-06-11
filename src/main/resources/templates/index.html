@@ -16,17 +16,17 @@
             <div id="random-quote-authors" th:text="${quoteOfTheDay.getAuthorsFormatted}"></div>
             <div id="random-quote-book" th:text="${quoteOfTheDay.getBookTitle}"></div>
 
-            <small th:attr="data-quote-id=${quoteOfTheDay.getId()}"
-                   th:text="'Liked by: ' + ${quoteOfTheDay.getLikes()}"}
-                   id="quoteOfTheDay-like-counter">
-            </small>
-
             <button class="js-like-button"
                     sec:authorize="isAuthenticated()"
                     th:attr="data-quote-id=${quoteOfTheDay.getId()}, class=${quoteOfTheDay.likedByUserIds.contains(currentUserId) ? 'liked-button' : 'like-button'}"
                     th:text="${quoteOfTheDay.getLikedByUserIds.contains(currentUserId) ? 'Liked' : 'Like'}"
                     th:onclick="|toggleLike(this, '${quoteOfTheDay.getId()}', document.getElementById('quoteOfTheDay-like-counter'))|">
             </button>
+
+            <small th:attr="data-quote-id=${quoteOfTheDay.getId()}"
+                   th:text="'Liked by: ' + ${quoteOfTheDay.getLikes()}"}
+                   id="quoteOfTheDay-like-counter">
+            </small>
         </div>
     </div>
 
