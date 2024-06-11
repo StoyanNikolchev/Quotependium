@@ -5,6 +5,7 @@ import com.softuni.quotependium.web.QuoteController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ public class QuoteOfTheDayScheduler {
     }
 
     @Scheduled(cron = "0 0 0 * * *")
+    @CacheEvict(value = "quoteOfTheDay")
     public void updateQuoteOfTheDay() {
         this.quoteOfTheDayService.updateQuoteOfTheDay();
         logger.info("Updated quote of the day!");

@@ -7,6 +7,7 @@ import com.softuni.quotependium.repositories.QuoteOfTheDayRepository;
 import com.softuni.quotependium.repositories.QuoteRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -34,6 +35,7 @@ public class QuoteOfTheDayService {
         }
     }
 
+    @Cacheable("quoteOfTheDay")
     public QuoteView getQuoteOfTheDayView() {
 
         if (!dbIsInit()) {
