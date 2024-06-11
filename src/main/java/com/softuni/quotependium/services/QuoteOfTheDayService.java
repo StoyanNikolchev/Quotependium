@@ -7,6 +7,7 @@ import com.softuni.quotependium.repositories.QuoteOfTheDayRepository;
 import com.softuni.quotependium.repositories.QuoteRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -70,5 +71,11 @@ public class QuoteOfTheDayService {
 
     private boolean dbIsInit() {
         return this.quoteRepository.count() > 0;
+    }
+
+    @CachePut(value = "quoteOfTheDay")
+    public QuoteView updateQuoteOfTheDayLikes() {
+        Long id = getQuoteOfTheDayView().getId();
+        return mapQuoteEntityToView(this.quoteRepository.findById(id).get());
     }
 }

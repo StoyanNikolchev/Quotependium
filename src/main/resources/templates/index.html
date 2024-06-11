@@ -25,7 +25,7 @@
                     sec:authorize="isAuthenticated()"
                     th:attr="data-quote-id=${quoteOfTheDay.getId()}, class=${quoteOfTheDay.likedByUserIds.contains(currentUserId) ? 'liked-button' : 'like-button'}"
                     th:text="${quoteOfTheDay.getLikedByUserIds.contains(currentUserId) ? 'Liked' : 'Like'}"
-                    th:onclick="|toggleLike(this, ${quoteOfTheDay.getId()}, document.getElementById('quoteOfTheDay-like-counter'))|">
+                    th:onclick="|toggleLike(this, '${quoteOfTheDay.getId()}', document.getElementById('quoteOfTheDay-like-counter'))|">
             </button>
         </div>
     </div>
