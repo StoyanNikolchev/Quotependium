@@ -10,6 +10,7 @@ import com.softuni.quotependium.services.QuoteService;
 import com.softuni.quotependium.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -19,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 @Controller
@@ -42,10 +44,14 @@ public class BrowseController {
                                 @PageableDefault(
                                         sort = "id",
                                         direction = Sort.Direction.ASC,
-                                        size = 10,
                                         page = 0)
-                                Pageable pageable) {
+                                Pageable pageable,
+                                @RequestParam(defaultValue = "10") int size) {
+
+        pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
         Page<AuthorView> authorsPage = this.authorService.getAllAuthors(pageable);
+
+        model.addAttribute("size", size);
         model.addAttribute("authors", authorsPage);
         return "browse-authors";
     }
@@ -56,10 +62,11 @@ public class BrowseController {
                                    @PageableDefault(
                                            sort = "id",
                                            direction = Sort.Direction.ASC,
-                                           size = 3,
                                            page = 0)
-                                   Pageable pageable) {
+                                   Pageable pageable,
+                                   @RequestParam(defaultValue = "10") int size) {
 
+        pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
         AuthorView authorById = this.authorService.findAuthorById(authorId);
 
         if (authorById == null) {
@@ -67,6 +74,7 @@ public class BrowseController {
         }
 
         Page<BookTitleView> books = this.bookService.findBooksByAuthorId(authorId, pageable);
+        model.addAttribute("size", size);
         model.addAttribute("author", authorById);
         model.addAttribute("books", books);
 
@@ -78,12 +86,15 @@ public class BrowseController {
                                @PageableDefault(
                                        sort = "id",
                                        direction = Sort.Direction.ASC,
-                                       size = 3,
                                        page = 0)
-                               Pageable pageable) {
+                               Pageable pageable,
+                               @RequestParam(defaultValue = "10") int size) {
 
+        pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
         Page<QuoteView> quotesPage = this.quoteService.getAllQuotes(pageable);
+
         model.addAttribute("quotes", quotesPage);
+        model.addAttribute("size", size);
 
         Long currentUserId = this.userService.getCurrentUserId();
         if (currentUserId != null) {
@@ -98,12 +109,15 @@ public class BrowseController {
                               @PageableDefault(
                                       sort = "id",
                                       direction = Sort.Direction.ASC,
-                                      size = 10,
                                       page = 0)
-                              Pageable pageable) {
+                              Pageable pageable,
+                              @RequestParam(defaultValue = "10") int size) {
 
+        pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
         Page<BookTitleView> allTitlesPage = this.bookService.getAllTitles(pageable);
+
         model.addAttribute("bookTitles", allTitlesPage);
+        model.addAttribute("size", size);
 
         Long currentUserId = this.userService.getCurrentUserId();
         if (currentUserId != null) {
@@ -119,9 +133,11 @@ public class BrowseController {
                                  @PageableDefault(
                                          sort = "id",
                                          direction = Sort.Direction.ASC,
-                                         size = 3,
                                          page = 0)
-                                 Pageable pageable) {
+                                 Pageable pageable,
+                                 @RequestParam(defaultValue = "10") int size) {
+
+        pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
         BookDetailsView bookById = this.bookService.findBookById(bookId);
 
         if (bookById == null) {
@@ -129,6 +145,8 @@ public class BrowseController {
         }
 
         Page<QuoteView> quotes = this.quoteService.getAllQuotesByBookId(bookId, pageable);
+
+        model.addAttribute("size", size);
         model.addAttribute("book", bookById);
         model.addAttribute("quotes", quotes);
 

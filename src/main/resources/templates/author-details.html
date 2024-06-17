@@ -19,6 +19,19 @@
     </ul>
 </div>
 
+<div class="container mt-3">
+    <form method="get" th:action="@{'/browse/authors/' + ${author.id}}">
+        <div class="entries-per-page">
+            <label for="size">Entries per page:</label>
+            <select id="size" name="size" onchange="this.form.submit()">
+                <option th:value="10" th:text="'10'" th:selected="${size == 10}"></option>
+                <option th:value="20" th:text="'20'" th:selected="${size == 20}"></option>
+                <option th:value="30" th:text="'30'" th:selected="${size == 30}"></option>
+            </select>
+        </div>
+        <input type="hidden" name="page" th:value="${books.number}" />
+    </form>
+</div>
 
 <div class="container mt-5 page-nav">
     <nav aria-label="Page navigation">
