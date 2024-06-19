@@ -8,6 +8,7 @@ public class ManageUserRolesDto {
     private Long id;
     private String username;
     private List<UserRoleEntity> roles;
+    private String profilePicturePath;
 
     public Long getId() {
         return id;
@@ -33,6 +34,15 @@ public class ManageUserRolesDto {
 
     public ManageUserRolesDto setRoles(List<UserRoleEntity> roles) {
         this.roles = roles;
+        return this;
+    }
+
+    public String getProfilePicturePath() {
+        return profilePicturePath;
+    }
+
+    public ManageUserRolesDto setProfilePicturePath(String profilePicturePath) {
+        this.profilePicturePath = profilePicturePath;
         return this;
     }
 }

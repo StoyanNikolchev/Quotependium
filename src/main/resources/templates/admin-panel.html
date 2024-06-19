@@ -23,7 +23,15 @@
             <div th:each="user : ${usersPage.getContent()}" class="card mb-3">
                 <div class="card-body">
 
-                    <h5 class="card-title" th:text="${user.username}"></h5>
+                    <h5 class="card-title mb-3 text-center" th:text="${user.username}"></h5>
+
+                    <div class="mb-3 text-center">
+                        <img th:if="${user.profilePicturePath != null}" th:src="@{'/' + ${user.profilePicturePath}}"
+                             class="profile-picture img-thumbnail mb-3 rounded-circle" alt="Profile Picture">
+                        <img th:unless="${user.profilePicturePath != null}" th:src="@{'/' + 'images/' + placeholder.png}"
+                             class="profile-picture img-thumbnail mb-3 rounded-circle" alt="Placeholder Picture">
+                    </div>
+
                     <p>
                         Current roles:
                         <span th:each="role, iterStat : ${user.roles}">

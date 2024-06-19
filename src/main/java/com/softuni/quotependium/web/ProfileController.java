@@ -37,7 +37,7 @@ public class ProfileController {
     public String updateProfile(@ModelAttribute("username") String newUsername,
                                 @ModelAttribute("profilePicture") MultipartFile profilePicture,
                                 Model model,
-                                BindingResult bindingResult) throws MaxUploadSizeExceededException{
+                                BindingResult bindingResult) {
 
         boolean usernameExists = this.userService.usernameExists(newUsername);
         boolean usernameIsTheSame = this.userService.userNameIsTheSame(newUsername);
