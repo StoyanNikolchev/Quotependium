@@ -1,4 +1,4 @@
-package com.softuni.quotependium.security.config;
+package com.softuni.quotependium.configs;
 
 import com.softuni.quotependium.repositories.UserRepository;
 import com.softuni.quotependium.services.UserDetailsServiceImpl;
