@@ -16,8 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-import static com.softuni.quotependium.domain.enums.Constants.NO_ROLES_SELECTED_ERROR;
-import static com.softuni.quotependium.domain.enums.Constants.ROLES_UPDATED_SUCCESSFULLY;
+import static com.softuni.quotependium.domain.enums.Messages.*;
 
 @Controller
 public class AdminPanelController {

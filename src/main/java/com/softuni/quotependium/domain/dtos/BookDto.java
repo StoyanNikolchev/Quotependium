@@ -8,21 +8,23 @@ import org.hibernate.validator.constraints.Length;
 
 import java.util.Set;
 
+import static com.softuni.quotependium.domain.enums.Messages.*;
+
 public class BookDto {
 
-    @NotBlank(message = "Please enter a book title")
-    @Length(min = 3, max = 50, message = "Title must be between 3 and 50 characters long")
+    @NotBlank(message = ENTER_BOOK_TITLE)
+    @Length(min = 3, max = 50, message = INVALID_TITLE_LENGTH)
     private String title;
 
-    @NotBlank(message = "The ISBN cannot be blank")
+    @NotBlank(message = BLANK_ISBN)
     private String isbn;
 
-    @NotBlank(message = "Please enter at least one author")
-    @Length(min = 6, max = 50, message = "Author names must be between 6 and 50 characters long")
+    @NotBlank(message = BLANK_AUTHORS)
+    @Length(min = 6, max = 50, message = INVALID_AUTHORS_LENGTH)
     private String authorsString;
 
     @PastOrPresentYear
-    @Positive(message = "Year must be a positive number")
+    @Positive(message = NEGATIVE_YEAR)
     private Integer publicationYear;
 
     private Set<AuthorEntity> authors;

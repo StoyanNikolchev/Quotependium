@@ -2,18 +2,19 @@ package com.softuni.quotependium.domain.dtos;
 
 import com.softuni.quotependium.domain.entities.BookEntity;
 import com.softuni.quotependium.domain.entities.UserEntity;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
+import static com.softuni.quotependium.domain.enums.Messages.*;
+
 public class QuoteImportDto {
 
-    @Length(min = 10, max = 500, message = "Quote must be between 10 and 500 characters long")
+    @Length(min = 10, max = 500, message = INVALID_QUOTE_TEXT_LENGTH)
     private String text;
 
-    @Range(min = 1, message = "Please enter a valid page number")
-    @NotNull(message = "Please enter a page number")
+    @Range(min = 1, message = INVALID_PAGE_NUMBER)
+    @NotNull(message = INVALID_PAGE_NUMBER)
     private Integer pageNumber;
     private UserEntity user;
     private BookEntity book;

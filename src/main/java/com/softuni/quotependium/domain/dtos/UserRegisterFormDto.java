@@ -4,25 +4,27 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
+import static com.softuni.quotependium.domain.enums.Messages.*;
+
 public class UserRegisterFormDto {
 
-    @NotBlank(message = "Enter your username")
-    @Length(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
+    @NotBlank(message = BLANK_USERNAME)
+    @Length(min = 3, max = 20, message = INVALID_USERNAME_LENGTH)
     private String username;
 
-    @NotBlank(message = "Enter your password")
-    @Length(min = 6, max = 20, message = "Passwords must be between 6 and 20 characters long")
+    @NotBlank(message = BLANK_PASSWORD)
+    @Length(min = 6, max = 20, message = INVALID_PASSWORD_LENGTH)
     private String password;
 
-    @NotBlank(message = "Confirm your password")
+    @NotBlank(message = BLANK_CONFIRM_PASSWORD)
     private String confirmPassword;
 
-    @NotBlank(message = "Enter your email")
-    @Email(message = "Enter a valid email address")
+    @NotBlank(message = BLANK_EMAIL)
+    @Email(message = INVALID_EMAIL)
     private String email;
 
-    @NotBlank(message = "Enter your full name")
-    @Length(min = 5, max = 20, message = "Full name must be between 5 and 20 characters long")
+    @NotBlank(message = BLANK_FULL_NAME)
+    @Length(min = 5, max = 20, message = INVALID_FULL_NAME_LENGTH)
     private String fullName;
 
     public String getUsername() {
