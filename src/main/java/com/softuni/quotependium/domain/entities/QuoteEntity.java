@@ -1,6 +1,8 @@
 package com.softuni.quotependium.domain.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,12 +12,15 @@ import java.util.Set;
 public class QuoteEntity extends BaseEntity {
 
     @ManyToOne
+    @NotNull
     private UserEntity user;
 
     @ManyToOne
+    @NotNull
     private BookEntity book;
 
     @Column(columnDefinition = "TEXT", nullable = false)
+    @Size(min = 10, max = 500)
     private String text;
 
     @Column(name = "page_number", nullable = false)

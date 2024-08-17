@@ -83,6 +83,4 @@ public class InitService {
             this.userRoleRepository.save(adminRole);
         }
     }
-
-    //TODO: Somehow test this garbage service with private methods D:
 }

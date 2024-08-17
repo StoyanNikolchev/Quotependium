@@ -1,6 +1,8 @@
 package com.softuni.quotependium.domain.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
@@ -9,9 +11,11 @@ import java.util.Set;
 public class BookEntity extends BaseEntity {
 
     @Column(nullable = false)
+    @Size(min = 3, max = 50)
     private String title;
 
     @Column(nullable = false, unique = true)
+    @Size(min = 13, max = 13)
     private String isbn;
 
     @ManyToMany(fetch= FetchType.EAGER)
@@ -23,6 +27,7 @@ public class BookEntity extends BaseEntity {
     private Set<AuthorEntity> authors;
 
     @Column(name = "publication_year")
+    @NotNull
     private Integer publicationYear;
 
     public String getTitle() {

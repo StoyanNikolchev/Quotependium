@@ -11,14 +11,14 @@ import java.util.Set;
 public class BookDto {
 
     @NotBlank(message = "Please enter a book title")
-    @Length(min = 3, message = "Title must be at least 3 characters long")
+    @Length(min = 3, max = 50, message = "Title must be between 3 and 50 characters long")
     private String title;
 
     @NotBlank(message = "The ISBN cannot be blank")
     private String isbn;
 
     @NotBlank(message = "Please enter at least one author")
-    @Length(min = 6, message = "Author names cannot be less than 6 characters long")
+    @Length(min = 6, max = 50, message = "Author names must be between 6 and 50 characters long")
     private String authorsString;
 
     @PastOrPresentYear

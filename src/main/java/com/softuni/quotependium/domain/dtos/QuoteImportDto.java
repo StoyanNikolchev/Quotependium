@@ -9,8 +9,7 @@ import org.hibernate.validator.constraints.Range;
 
 public class QuoteImportDto {
 
-    @NotBlank
-    @Length(min = 10, message = "Quote must be at least 10 characters long")
+    @Length(min = 10, max = 500, message = "Quote must be between 10 and 500 characters long")
     private String text;
 
     @Range(min = 1, message = "Please enter a valid page number")

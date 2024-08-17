@@ -3,6 +3,7 @@ package com.softuni.quotependium.domain.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -14,6 +15,7 @@ public class QuoteOfTheDayEntity extends BaseEntity {
     private LocalDate date;
 
     @Column(name = "quote_id")
+    @NotNull
     private Long quoteId;
 
     public LocalDate getDate() {

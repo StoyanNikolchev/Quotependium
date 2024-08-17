@@ -7,10 +7,11 @@ import org.hibernate.validator.constraints.Length;
 public class UserRegisterFormDto {
 
     @NotBlank(message = "Enter your username")
+    @Length(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     private String username;
 
     @NotBlank(message = "Enter your password")
-    @Length(min = 6, message = "Passwords must be at least 6 characters long")
+    @Length(min = 6, max = 20, message = "Passwords must be between 6 and 20 characters long")
     private String password;
 
     @NotBlank(message = "Confirm your password")
@@ -21,6 +22,7 @@ public class UserRegisterFormDto {
     private String email;
 
     @NotBlank(message = "Enter your full name")
+    @Length(min = 5, max = 20, message = "Full name must be between 5 and 20 characters long")
     private String fullName;
 
     public String getUsername() {
