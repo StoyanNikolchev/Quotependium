@@ -11,10 +11,9 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form th:action="@{/quotes/add}"
-                  th:method="POST"
-                  th:object="${quoteImportDto}"
-            class="add-quote-form">
+            <form th:action="@{/quotes/add(bookId=${bookId})}" th:method="POST" th:object="${quoteImportDto}" class="add-quote-form">
+
+                <input type="hidden" name="bookId" th:value="${bookId}">
 
                 <h1 class="text-center mb-4">Please enter your quote and the page it's from.</h1>
 
